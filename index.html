@@ -1,0 +1,1079 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#E8132A">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="SPORT PLAN">
+<title>برنامه تمرینی کیک‌بوکس</title>
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --red: #E8132A;
+    --dark-red: #9B0F1E;
+    --black: #0A0A0A;
+    --dark: #111111;
+    --card: #1A1A1A;
+    --card2: #222222;
+    --gold: #C9A84C;
+    --white: #F5F5F5;
+    --gray: #888888;
+    --light-gray: #333333;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--black);
+    color: var(--white);
+    font-family: 'Vazirmatn', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* HERO */
+  .hero {
+    background: linear-gradient(135deg, #0A0A0A 0%, #1a0306 50%, #0A0A0A 100%);
+    padding: 60px 20px 40px;
+    text-align: center;
+    position: relative;
+    border-bottom: 2px solid var(--red);
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at center, rgba(232,19,42,0.15) 0%, transparent 70%);
+  }
+
+  .hero-badge {
+    display: inline-block;
+    background: var(--red);
+    color: white;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    padding: 6px 16px;
+    margin-bottom: 20px;
+    clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
+  }
+
+  .hero h1 {
+    font-size: clamp(28px, 7vw, 56px);
+    font-weight: 900;
+    line-height: 1.1;
+    position: relative;
+  }
+
+  .hero h1 span {
+    color: var(--red);
+  }
+
+  .hero-stats {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    margin-top: 30px;
+    flex-wrap: wrap;
+  }
+
+  .stat {
+    text-align: center;
+  }
+
+  .stat-num {
+    font-size: 28px;
+    font-weight: 900;
+    color: var(--red);
+    display: block;
+  }
+
+  .stat-label {
+    font-size: 11px;
+    color: var(--gray);
+    letter-spacing: 1px;
+  }
+
+  /* NAV */
+  .nav {
+    display: flex;
+    gap: 4px;
+    padding: 16px 16px 0;
+    overflow-x: auto;
+    scrollbar-width: none;
+    border-bottom: 1px solid var(--light-gray);
+    background: var(--dark);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  .nav::-webkit-scrollbar { display: none; }
+
+  .nav-btn {
+    background: none;
+    border: none;
+    color: var(--gray);
+    font-family: 'Vazirmatn', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    padding: 10px 16px;
+    cursor: pointer;
+    white-space: nowrap;
+    border-bottom: 2px solid transparent;
+    transition: all 0.2s;
+    position: relative;
+    bottom: -1px;
+  }
+
+  .nav-btn.active {
+    color: var(--red);
+    border-bottom-color: var(--red);
+  }
+
+  .nav-btn:hover:not(.active) {
+    color: var(--white);
+  }
+
+  /* CONTENT */
+  .content {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 24px 16px 60px;
+  }
+
+  .tab-content { display: none; }
+  .tab-content.active { display: block; animation: fadeIn 0.3s ease; }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* DAY CARD */
+  .day-card {
+    background: var(--card);
+    border-radius: 12px;
+    margin-bottom: 16px;
+    overflow: hidden;
+    border: 1px solid var(--light-gray);
+    transition: border-color 0.2s;
+  }
+
+  .day-card:hover { border-color: var(--red); }
+
+  .day-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 16px 20px;
+    cursor: pointer;
+    user-select: none;
+  }
+
+  .day-num {
+    width: 42px;
+    height: 42px;
+    background: var(--red);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    font-weight: 900;
+    flex-shrink: 0;
+    clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+  }
+
+  .day-gym { background: var(--gold) !important; }
+
+  .day-info { flex: 1; }
+
+  .day-name {
+    font-size: 16px;
+    font-weight: 700;
+  }
+
+  .day-type {
+    font-size: 11px;
+    color: var(--gray);
+    margin-top: 2px;
+    letter-spacing: 1px;
+  }
+
+  .day-tags {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+
+  .tag {
+    font-size: 10px;
+    font-weight: 600;
+    padding: 3px 10px;
+    border-radius: 20px;
+    letter-spacing: 0.5px;
+  }
+
+  .tag-gym { background: rgba(201,168,76,0.2); color: var(--gold); border: 1px solid rgba(201,168,76,0.3); }
+  .tag-cardio { background: rgba(232,19,42,0.15); color: #ff6b7a; border: 1px solid rgba(232,19,42,0.3); }
+  .tag-speed { background: rgba(100,200,255,0.1); color: #64c8ff; border: 1px solid rgba(100,200,255,0.2); }
+  .tag-strength { background: rgba(150,100,255,0.1); color: #b47cff; border: 1px solid rgba(150,100,255,0.2); }
+  .tag-recovery { background: rgba(100,200,150,0.1); color: #64c896; border: 1px solid rgba(100,200,150,0.2); }
+  .tag-morning { background: rgba(255,200,50,0.1); color: #ffc832; border: 1px solid rgba(255,200,50,0.2); }
+
+  .chevron {
+    color: var(--gray);
+    font-size: 18px;
+    transition: transform 0.3s;
+  }
+
+  .day-card.open .chevron { transform: rotate(180deg); }
+
+  .day-body {
+    display: none;
+    padding: 0 20px 20px;
+  }
+
+  .day-card.open .day-body { display: block; }
+
+  /* SESSION BLOCK */
+  .session-block {
+    background: var(--card2);
+    border-radius: 8px;
+    padding: 14px 16px;
+    margin-bottom: 12px;
+    border-right: 3px solid var(--red);
+  }
+
+  .session-block.morning { border-right-color: var(--gold); }
+  .session-block.recovery { border-right-color: #64c896; }
+
+  .session-title {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    color: var(--gray);
+    margin-bottom: 12px;
+    text-transform: uppercase;
+  }
+
+  .session-block.morning .session-title { color: var(--gold); }
+  .session-block.recovery .session-title { color: #64c896; }
+
+  /* EXERCISE TABLE */
+  .ex-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  .ex-table tr {
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+  }
+
+  .ex-table tr:last-child { border-bottom: none; }
+
+  .ex-table td {
+    padding: 8px 4px;
+    font-size: 13px;
+    vertical-align: top;
+  }
+
+  .ex-name {
+    color: var(--white);
+    font-weight: 500;
+    width: 55%;
+  }
+
+  .ex-detail {
+    color: var(--gray);
+    font-size: 12px;
+    text-align: left;
+    direction: ltr;
+  }
+
+  .ex-icon {
+    width: 24px;
+    text-align: center;
+    font-size: 14px;
+    opacity: 0.7;
+  }
+
+  /* RUN CARD */
+  .run-card {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    margin-top: 10px;
+  }
+
+  .run-phase {
+    background: rgba(255,255,255,0.05);
+    border-radius: 6px;
+    padding: 10px;
+    text-align: center;
+  }
+
+  .run-phase-name {
+    font-size: 10px;
+    color: var(--gray);
+    letter-spacing: 1px;
+    margin-bottom: 4px;
+  }
+
+  .run-dist {
+    font-size: 18px;
+    font-weight: 900;
+    color: var(--white);
+  }
+
+  .run-unit { font-size: 10px; color: var(--gray); }
+
+  .run-pace {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--red);
+    margin-top: 4px;
+    direction: ltr;
+  }
+
+  /* GOAL SECTION */
+  .goals-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+
+  .goal-card {
+    background: var(--card);
+    border-radius: 10px;
+    padding: 18px;
+    border: 1px solid var(--light-gray);
+    text-align: center;
+  }
+
+  .goal-icon { font-size: 28px; margin-bottom: 8px; }
+  .goal-title { font-size: 13px; font-weight: 700; margin-bottom: 4px; }
+  .goal-desc { font-size: 11px; color: var(--gray); line-height: 1.5; }
+
+  /* PROGRESS */
+  .progress-item {
+    margin-bottom: 16px;
+  }
+
+  .progress-label {
+    display: flex;
+    justify-content: space-between;
+    font-size: 13px;
+    margin-bottom: 6px;
+  }
+
+  .progress-label span:first-child { font-weight: 600; }
+  .progress-label span:last-child { color: var(--red); font-weight: 700; }
+
+  .progress-bar {
+    height: 6px;
+    background: var(--light-gray);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--dark-red), var(--red));
+    border-radius: 3px;
+    transition: width 1s ease;
+  }
+
+  /* TIPS */
+  .tip-card {
+    background: var(--card);
+    border-radius: 10px;
+    padding: 16px;
+    margin-bottom: 12px;
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    border: 1px solid var(--light-gray);
+  }
+
+  .tip-icon {
+    font-size: 22px;
+    flex-shrink: 0;
+  }
+
+  .tip-title {
+    font-size: 14px;
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+
+  .tip-desc {
+    font-size: 12px;
+    color: var(--gray);
+    line-height: 1.6;
+  }
+
+  /* SECTION TITLE */
+  .section-title {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    color: var(--red);
+    text-transform: uppercase;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .section-title::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, var(--red), transparent);
+  }
+
+  .divider {
+    height: 1px;
+    background: var(--light-gray);
+    margin: 20px 0;
+  }
+
+  /* FOOTER */
+  .footer {
+    text-align: center;
+    padding: 20px;
+    color: var(--gray);
+    font-size: 11px;
+    border-top: 1px solid var(--light-gray);
+  }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-badge">KICKBOXING PROGRAM</div>
+  <h1>برنامه تمرینی<br><span>کیک‌بوکس حرفه‌ای</span></h1>
+  <div class="hero-stats">
+    <div class="stat">
+      <span class="stat-num">۷</span>
+      <span class="stat-label">روز در هفته</span>
+    </div>
+    <div class="stat">
+      <span class="stat-num">۶۷→۶۰</span>
+      <span class="stat-label">هدف وزن (کیلو)</span>
+    </div>
+    <div class="stat">
+      <span class="stat-num">۱۸۰°</span>
+      <span class="stat-label">هدف کشش</span>
+    </div>
+    <div class="stat">
+      <span class="stat-num">۲۱</span>
+      <span class="stat-label">سال</span>
+    </div>
+  </div>
+</div>
+
+<nav class="nav">
+  <button class="nav-btn active" onclick="showTab('weekly')">برنامه هفتگی</button>
+  <button class="nav-btn" onclick="showTab('cardio')">هوازی</button>
+  <button class="nav-btn" onclick="showTab('morning')">صبح‌گاهی</button>
+  <button class="nav-btn" onclick="showTab('goals')">اهداف</button>
+  <button class="nav-btn" onclick="showTab('tips')">نکات مربی</button>
+</nav>
+
+<div class="content">
+
+  <!-- WEEKLY TAB -->
+  <div id="tab-weekly" class="tab-content active">
+    <div class="section-title">برنامه هفتگی</div>
+
+    <!-- شنبه -->
+    <div class="day-card" onclick="toggleDay(this)">
+      <div class="day-header">
+        <div class="day-num">ش</div>
+        <div class="day-info">
+          <div class="day-name">شنبه</div>
+          <div class="day-type">استقامت + هوازی</div>
+        </div>
+        <div class="day-tags">
+          <span class="tag tag-cardio">هوازی</span>
+        </div>
+        <div class="chevron">▼</div>
+      </div>
+      <div class="day-body">
+        <div class="session-block">
+          <div class="session-title">🏃 دویدن</div>
+          <div class="run-card">
+            <div class="run-phase">
+              <div class="run-phase-name">گرم کردن</div>
+              <div class="run-dist">۴۰۰<span class="run-unit">م</span></div>
+              <div class="run-pace">6:30/km</div>
+            </div>
+            <div class="run-phase">
+              <div class="run-phase-name">اصلی</div>
+              <div class="run-dist">۴<span class="run-unit">کم</span></div>
+              <div class="run-pace">5:45/km</div>
+            </div>
+            <div class="run-phase">
+              <div class="run-phase-name">سرد کردن</div>
+              <div class="run-dist">۴۰۰<span class="run-unit">م</span></div>
+              <div class="run-pace">7:00/km</div>
+            </div>
+          </div>
+        </div>
+        <div class="session-block">
+          <div class="session-title">💪 تمرین قدرتی هوازی</div>
+          <table class="ex-table">
+            <tr><td class="ex-icon">🔗</td><td class="ex-name">کشیدن لاستیک</td><td class="ex-detail">4×40 متر</td></tr>
+            <tr><td class="ex-icon">🔨</td><td class="ex-name">پتک استقامتی (راست و چپ)</td><td class="ex-detail">5×40 ضربه | 30ث استراحت</td></tr>
+            <tr><td class="ex-icon">🪢</td><td class="ex-name">طناب</td><td class="ex-detail">3×2 دقیقه</td></tr>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- یکشنبه -->
+    <div class="day-card" onclick="toggleDay(this)">
+      <div class="day-header">
+        <div class="day-num day-gym">۱</div>
+        <div class="day-info">
+          <div class="day-name">یکشنبه</div>
+          <div class="day-type">صبح: کشش + کیسه | شب: باشگاه ۹-۱۱</div>
+        </div>
+        <div class="day-tags">
+          <span class="tag tag-morning">صبح</span>
+          <span class="tag tag-gym">باشگاه</span>
+        </div>
+        <div class="chevron">▼</div>
+      </div>
+      <div class="day-body">
+        <div class="session-block morning">
+          <div class="session-title">☀️ تمرین صبح (۴۵ دقیقه)</div>
+          <table class="ex-table">
+            <tr><td class="ex-icon">🔥</td><td class="ex-name">گرم کردن</td><td class="ex-detail">10 دقیقه</td></tr>
+            <tr><td class="ex-icon">🧘</td><td class="ex-name">کشش (پیژن پوز، اسپلیت، پروانه)</td><td class="ex-detail">20 دقیقه</td></tr>
+            <tr><td class="ex-icon">🥊</td><td class="ex-name">کیسه بوکس تکنیکی</td><td class="ex-detail">20 دقیقه</td></tr>
+            <tr><td class="ex-icon">🌬️</td><td class="ex-name">تنفس و آرامش</td><td class="ex-detail">5 دقیقه</td></tr>
+          </table>
+        </div>
+        <div class="session-block">
+          <div class="session-title">🥋 باشگاه شب</div>
+          <table class="ex-table">
+            <tr><td class="ex-icon">⏰</td><td class="ex-name">ساعت</td><td class="ex-detail">9:00 - 11:00 PM</td></tr>
+            <tr><td class="ex-icon">🎯</td><td class="ex-name">تمرکز</td><td class="ex-detail">تکنیک + اسپارینگ</td></tr>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- دوشنبه -->
+    <div class="day-card" onclick="toggleDay(this)">
+      <div class="day-header">
+        <div class="day-num">د</div>
+        <div class="day-info">
+          <div class="day-name">دوشنبه</div>
+          <div class="day-type">سرعت و انفجار</div>
+        </div>
+        <div class="day-tags">
+          <span class="tag tag-speed">سرعت</span>
+        </div>
+        <div class="chevron">▼</div>
+      </div>
+      <div class="day-body">
+        <div class="session-block">
+          <div class="session-title">⚡ سرعت و انفجار (۴۵ دقیقه)</div>
+          <table class="ex-table">
+            <tr><td class="ex-icon">🔥</td><td class="ex-name">گرم کردن</td><td class="ex-detail">5 دقیقه</td></tr>
+            <tr><td class="ex-icon">💨</td><td class="ex-name">اسپرینت ۱۰۰ متر</td><td class="ex-detail">8×100م | 45ث استراحت</td></tr>
+            <tr><td class="ex-icon">🔨</td><td class="ex-name">پتک سرعتی</td><td class="ex-detail">8×20ث تند | 20ث استراحت</td></tr>
+            <tr><td class="ex-icon">🪜</td><td class="ex-name">نردبان معلق</td><td class="ex-detail">5×رفت و برگشت</td></tr>
+            <tr><td class="ex-icon">🪢</td><td class="ex-name">طناب سرعتی</td><td class="ex-detail">8×30ث تند | 30ث استراحت</td></tr>
+            <tr><td class="ex-icon">❄️</td><td class="ex-name">سرد کردن</td><td class="ex-detail">5 دقیقه</td></tr>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- سه‌شنبه -->
+    <div class="day-card" onclick="toggleDay(this)">
+      <div class="day-header">
+        <div class="day-num day-gym">۳</div>
+        <div class="day-info">
+          <div class="day-name">سه‌شنبه</div>
+          <div class="day-type">صبح: کشش + کیسه | شب: باشگاه ۹-۱۱</div>
+        </div>
+        <div class="day-tags">
+          <span class="tag tag-morning">صبح</span>
+          <span class="tag tag-gym">باشگاه</span>
+        </div>
+        <div class="chevron">▼</div>
+      </div>
+      <div class="day-body">
+        <div class="session-block morning">
+          <div class="session-title">☀️ تمرین صبح (۴۵ دقیقه)</div>
+          <table class="ex-table">
+            <tr><td class="ex-icon">🔥</td><td class="ex-name">گرم کردن</td><td class="ex-detail">10 دقیقه</td></tr>
+            <tr><td class="ex-icon">🧘</td><td class="ex-name">کشش (پیژن پوز، اسپلیت، پروانه)</td><td class="ex-detail">20 دقیقه</td></tr>
+            <tr><td class="ex-icon">🥊</td><td class="ex-name">کیسه بوکس تکنیکی</td><td class="ex-detail">20 دقیقه</td></tr>
+            <tr><td class="ex-icon">🌬️</td><td class="ex-name">تنفس و آرامش</td><td class="ex-detail">5 دقیقه</td></tr>
+          </table>
+        </div>
+        <div class="session-block">
+          <div class="session-title">🥋 باشگاه شب</div>
+          <table class="ex-table">
+            <tr><td class="ex-icon">⏰</td><td class="ex-name">ساعت</td><td class="ex-detail">9:00 - 11:00 PM</td></tr>
+            <tr><td class="ex-icon">🎯</td><td class="ex-name">تمرکز</td><td class="ex-detail">ترکیب ضربات + فوت‌ورک</td></tr>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- چهارشنبه -->
+    <div class="day-card" onclick="toggleDay(this)">
+      <div class="day-header">
+        <div class="day-num">چ</div>
+        <div class="day-info">
+          <div class="day-name">چهارشنبه</div>
+          <div class="day-type">قدرت استقامتی انفجاری</div>
+        </div>
+        <div class="day-tags">
+          <span class="tag tag-strength">قدرت</span>
+          <span class="tag tag-cardio">هوازی</span>
+        </div>
+        <div class="chevron">▼</div>
+      </div>
+      <div class="day-body">
+        <div class="session-block">
+          <div class="session-title">🏃 تمپو ران</div>
+          <div class="run-card">
+            <div class="run-phase">
+              <div class="run-phase-name">گرم کردن</div>
+              <div class="run-dist">۴۰۰<span class="run-unit">م</span></div>
+              <div class="run-pace">6:30/km</div>
+            </div>
+            <div class="run-phase">
+              <div class="run-phase-name">تمپو</div>
+              <div class="run-dist">۳<span class="run-unit">کم</span></div>
+              <div class="run-pace">5:00/km</div>
+            </div>
+            <div class="run-phase">
+              <div class="run-phase-name">سرد کردن</div>
+              <div class="run-dist">۴۰۰<span class="run-unit">م</span></div>
+              <div class="run-pace">7:00/km</div>
+            </div>
+          </div>
+        </div>
+        <div class="session-block">
+          <div class="session-title">💪 قدرت انفجاری (سنگین‌ترین روز)</div>
+          <table class="ex-table">
+            <tr><td class="ex-icon">🪵</td><td class="ex-name">کنده ۲۰ کیلو (حمل)</td><td class="ex-detail">3×100 متر</td></tr>
+            <tr><td class="ex-icon">🔨</td><td class="ex-name">پتک قدرتی آروم و سنگین</td><td class="ex-detail">4×30 ضربه هر طرف</td></tr>
+            <tr><td class="ex-icon">🔗</td><td class="ex-name">کشیدن لاستیک سرعتی</td><td class="ex-detail">4×40 متر</td></tr>
+            <tr><td class="ex-icon">🤸</td><td class="ex-name">دار حلقه</td><td class="ex-detail">3×حداکثر</td></tr>
+            <tr><td class="ex-icon">🔨</td><td class="ex-name">پتک فینیشر (حداکثر سرعت)</td><td class="ex-detail">3×15ث تند | 45ث استراحت</td></tr>
+            <tr><td class="ex-icon">❄️</td><td class="ex-name">سرد کردن</td><td class="ex-detail">5 دقیقه</td></tr>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- پنجشنبه -->
+    <div class="day-card" onclick="toggleDay(this)">
+      <div class="day-header">
+        <div class="day-num day-gym">۵</div>
+        <div class="day-info">
+          <div class="day-name">پنجشنبه</div>
+          <div class="day-type">صبح: کشش + کیسه | شب: باشگاه ۹-۱۱</div>
+        </div>
+        <div class="day-tags">
+          <span class="tag tag-morning">صبح</span>
+          <span class="tag tag-gym">باشگاه</span>
+        </div>
+        <div class="chevron">▼</div>
+      </div>
+      <div class="day-body">
+        <div class="session-block morning">
+          <div class="session-title">☀️ تمرین صبح (۴۵ دقیقه)</div>
+          <table class="ex-table">
+            <tr><td class="ex-icon">🔥</td><td class="ex-name">گرم کردن</td><td class="ex-detail">10 دقیقه</td></tr>
+            <tr><td class="ex-icon">🧘</td><td class="ex-name">کشش (پیژن پوز، اسپلیت، پروانه)</td><td class="ex-detail">20 دقیقه</td></tr>
+            <tr><td class="ex-icon">🥊</td><td class="ex-name">کیسه بوکس تکنیکی</td><td class="ex-detail">20 دقیقه</td></tr>
+            <tr><td class="ex-icon">🌬️</td><td class="ex-name">تنفس و آرامش</td><td class="ex-detail">5 دقیقه</td></tr>
+          </table>
+        </div>
+        <div class="session-block">
+          <div class="session-title">🥋 باشگاه شب</div>
+          <table class="ex-table">
+            <tr><td class="ex-icon">⏰</td><td class="ex-name">ساعت</td><td class="ex-detail">9:00 - 11:00 PM</td></tr>
+            <tr><td class="ex-icon">🎯</td><td class="ex-name">تمرکز</td><td class="ex-detail">اسپارینگ + تکنیک پا</td></tr>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- جمعه -->
+    <div class="day-card" onclick="toggleDay(this)">
+      <div class="day-header">
+        <div class="day-num" style="background:#64c896">ج</div>
+        <div class="day-info">
+          <div class="day-name">جمعه</div>
+          <div class="day-type">ریکاوری فعال</div>
+        </div>
+        <div class="day-tags">
+          <span class="tag tag-recovery">ریکاوری</span>
+        </div>
+        <div class="chevron">▼</div>
+      </div>
+      <div class="day-body">
+        <div class="session-block recovery">
+          <div class="session-title">🌿 ریکاوری فعال</div>
+          <table class="ex-table">
+            <tr><td class="ex-icon">🚶</td><td class="ex-name">پیاده‌روی سبک</td><td class="ex-detail">20 دقیقه</td></tr>
+            <tr><td class="ex-icon">🧘</td><td class="ex-name">کشش کامل بدن</td><td class="ex-detail">20 دقیقه</td></tr>
+            <tr><td class="ex-icon">🌬️</td><td class="ex-name">تنفس و آرامش</td><td class="ex-detail">10 دقیقه</td></tr>
+          </table>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- CARDIO TAB -->
+  <div id="tab-cardio" class="tab-content">
+    <div class="section-title">برنامه هوازی تخصصی</div>
+
+    <div class="day-card" style="border-color: var(--red);">
+      <div class="day-header" onclick="toggleDay(this.parentElement)">
+        <div class="day-num">ش</div>
+        <div class="day-info">
+          <div class="day-name">شنبه — استقامت پایه</div>
+          <div class="day-type">هدف: ظرفیت هوازی + چربی‌سوزی</div>
+        </div>
+        <div class="chevron">▼</div>
+      </div>
+      <div class="day-body">
+        <div class="session-block">
+          <div class="session-title">🏃 دویدن</div>
+          <div class="run-card">
+            <div class="run-phase"><div class="run-phase-name">گرم کردن</div><div class="run-dist">۴۰۰<span class="run-unit">م</span></div><div class="run-pace">6:30/km</div></div>
+            <div class="run-phase"><div class="run-phase-name">اصلی</div><div class="run-dist">۴<span class="run-unit">کم</span></div><div class="run-pace">5:45/km</div></div>
+            <div class="run-phase"><div class="run-phase-name">سرد کردن</div><div class="run-dist">۴۰۰<span class="run-unit">م</span></div><div class="run-pace">7:00/km</div></div>
+          </div>
+        </div>
+        <div class="session-block">
+          <div class="session-title">💪 بعد از دویدن</div>
+          <table class="ex-table">
+            <tr><td class="ex-icon">🔗</td><td class="ex-name">کشیدن لاستیک</td><td class="ex-detail">4×40 متر</td></tr>
+            <tr><td class="ex-icon">🔨</td><td class="ex-name">پتک استقامتی راست/چپ</td><td class="ex-detail">5×40 ضربه | 30ث استراحت</td></tr>
+            <tr><td class="ex-icon">🪢</td><td class="ex-name">طناب متوسط</td><td class="ex-detail">3×2 دقیقه</td></tr>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="day-card">
+      <div class="day-header" onclick="toggleDay(this.parentElement)">
+        <div class="day-num">د</div>
+        <div class="day-info">
+          <div class="day-name">دوشنبه — سرعت و انفجار</div>
+          <div class="day-type">هدف: سرعت + قدرت انفجاری</div>
+        </div>
+        <div class="chevron">▼</div>
+      </div>
+      <div class="day-body">
+        <div class="session-block">
+          <div class="session-title">⚡ پروتکل سرعتی</div>
+          <table class="ex-table">
+            <tr><td class="ex-icon">🔥</td><td class="ex-name">گرم کردن</td><td class="ex-detail">5 دقیقه</td></tr>
+            <tr><td class="ex-icon">💨</td><td class="ex-name">اسپرینت ۱۰۰ متر</td><td class="ex-detail">8 ست | حداکثر سرعت | 45ث استراحت</td></tr>
+            <tr><td class="ex-icon">🔨</td><td class="ex-name">پتک سرعتی</td><td class="ex-detail">8×20ث تند | 20ث استراحت</td></tr>
+            <tr><td class="ex-icon">🪜</td><td class="ex-name">نردبان معلق</td><td class="ex-detail">5×رفت و برگشت</td></tr>
+            <tr><td class="ex-icon">🪢</td><td class="ex-name">طناب سرعتی</td><td class="ex-detail">8×30ث تند | 30ث استراحت</td></tr>
+            <tr><td class="ex-icon">❄️</td><td class="ex-name">سرد کردن</td><td class="ex-detail">5 دقیقه</td></tr>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="day-card">
+      <div class="day-header" onclick="toggleDay(this.parentElement)">
+        <div class="day-num">چ</div>
+        <div class="day-info">
+          <div class="day-name">چهارشنبه — قدرت استقامتی</div>
+          <div class="day-type">سنگین‌ترین روز هفته</div>
+        </div>
+        <div class="chevron">▼</div>
+      </div>
+      <div class="day-body">
+        <div class="session-block">
+          <div class="session-title">🏃 تمپو ران</div>
+          <div class="run-card">
+            <div class="run-phase"><div class="run-phase-name">گرم کردن</div><div class="run-dist">۴۰۰<span class="run-unit">م</span></div><div class="run-pace">6:30/km</div></div>
+            <div class="run-phase"><div class="run-phase-name">تمپو</div><div class="run-dist">۳<span class="run-unit">کم</span></div><div class="run-pace">5:00/km</div></div>
+            <div class="run-phase"><div class="run-phase-name">سرد کردن</div><div class="run-dist">۴۰۰<span class="run-unit">م</span></div><div class="run-pace">7:00/km</div></div>
+          </div>
+        </div>
+        <div class="session-block">
+          <div class="session-title">💪 قدرت انفجاری</div>
+          <table class="ex-table">
+            <tr><td class="ex-icon">🪵</td><td class="ex-name">کنده ۲۰ کیلو</td><td class="ex-detail">3×100 متر</td></tr>
+            <tr><td class="ex-icon">🔨</td><td class="ex-name">پتک قدرتی (آروم و سنگین)</td><td class="ex-detail">4×30 ضربه هر طرف</td></tr>
+            <tr><td class="ex-icon">🔗</td><td class="ex-name">کشیدن لاستیک سرعتی</td><td class="ex-detail">4×40 متر</td></tr>
+            <tr><td class="ex-icon">🤸</td><td class="ex-name">دار حلقه</td><td class="ex-detail">3×حداکثر</td></tr>
+            <tr><td class="ex-icon">🔨</td><td class="ex-name">پتک فینیشر</td><td class="ex-detail">3×15ث تند | 45ث استراحت</td></tr>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div style="background: var(--card); border-radius: 10px; padding: 16px; border: 1px solid rgba(232,19,42,0.3); margin-top: 8px;">
+      <div style="font-size: 12px; font-weight: 700; color: var(--red); margin-bottom: 10px; letter-spacing: 1px;">📈 پیشرفت هر ۲ هفته</div>
+      <div style="font-size: 13px; color: var(--gray); line-height: 1.8;">
+        • مسافت استقامتی رو ۴۰۰ متر اضافه کن<br>
+        • پیس رو ۱۰ ثانیه کم کن<br>
+        • هدف نهایی: ۸ کیلومتر با پیس ۵:۳۰
+      </div>
+    </div>
+  </div>
+
+  <!-- MORNING TAB -->
+  <div id="tab-morning" class="tab-content">
+    <div class="section-title">تمرین صبحگاهی روزهای باشگاه</div>
+
+    <div style="background: linear-gradient(135deg, rgba(201,168,76,0.1), rgba(201,168,76,0.05)); border: 1px solid rgba(201,168,76,0.3); border-radius: 10px; padding: 14px 16px; margin-bottom: 20px;">
+      <div style="font-size: 13px; color: var(--gold); font-weight: 700; margin-bottom: 6px;">⚠️ قانون طلایی صبح</div>
+      <div style="font-size: 12px; color: var(--gray); line-height: 1.7;">این تمرین صبحه و باشگاه شب داری — هیچ‌وقت تا خستگی نرو. هدف اینه که بدن بیدار بشه، نه خسته بشه.</div>
+    </div>
+
+    <div class="day-card open">
+      <div class="day-header" onclick="toggleDay(this.parentElement)">
+        <div class="day-num day-gym" style="clip-path: none; border-radius: 8px;">☀️</div>
+        <div class="day-info">
+          <div class="day-name">برنامه صبح (۴۵-۶۰ دقیقه)</div>
+          <div class="day-type">یکشنبه | سه‌شنبه | پنجشنبه</div>
+        </div>
+        <div class="chevron">▼</div>
+      </div>
+      <div class="day-body">
+        <div class="session-block morning">
+          <div class="session-title">۱. گرم کردن — ۱۰ دقیقه</div>
+          <table class="ex-table">
+            <tr><td class="ex-icon">🚶</td><td class="ex-name">پیاده‌روی آروم</td><td class="ex-detail">3 دقیقه</td></tr>
+            <tr><td class="ex-icon">🔄</td><td class="ex-name">چرخش گردن و شانه</td><td class="ex-detail">1 دقیقه</td></tr>
+            <tr><td class="ex-icon">🔄</td><td class="ex-name">چرخش لگن</td><td class="ex-detail">1 دقیقه</td></tr>
+            <tr><td class="ex-icon">🦵</td><td class="ex-name">اسکوات سبک</td><td class="ex-detail">20 تکرار</td></tr>
+            <tr><td class="ex-icon">🦵</td><td class="ex-name">لانج رفت و برگشت</td><td class="ex-detail">10 تکرار هر پا</td></tr>
+          </table>
+        </div>
+
+        <div class="session-block morning">
+          <div class="session-title">۲. کشش — ۲۰ دقیقه (برای رسیدن به ۱۸۰°)</div>
+          <table class="ex-table">
+            <tr><td class="ex-icon">🦋</td><td class="ex-name">کشش کشاله ران (پروانه)</td><td class="ex-detail">3×30 ثانیه</td></tr>
+            <tr><td class="ex-icon">🦵</td><td class="ex-name">اسپلیت جانبی (پای باز)</td><td class="ex-detail">3×45 ثانیه</td></tr>
+            <tr><td class="ex-icon">🦵</td><td class="ex-name">کشش همسترینگ ایستاده</td><td class="ex-detail">3×30 ثانیه</td></tr>
+            <tr><td class="ex-icon">🔄</td><td class="ex-name">لانج عمیق با چرخش</td><td class="ex-detail">3×30ث هر طرف</td></tr>
+            <tr><td class="ex-icon">🦵</td><td class="ex-name">کشش چهارسر دمر</td><td class="ex-detail">3×30 ثانیه</td></tr>
+            <tr><td class="ex-icon">🕊️</td><td class="ex-name">پیژن پوز (کبوتر)</td><td class="ex-detail">3×45ث هر طرف</td></tr>
+            <tr><td class="ex-icon">🧘</td><td class="ex-name">کشش کمر (حالت بچه)</td><td class="ex-detail">2×45 ثانیه</td></tr>
+          </table>
+        </div>
+
+        <div class="session-block morning">
+          <div class="session-title">۳. کیسه بوکس تکنیکی — ۲۰ دقیقه</div>
+          <table class="ex-table">
+            <tr><td class="ex-icon">🥊</td><td class="ex-name">جاب و کراس آروم</td><td class="ex-detail">3×2 دقیقه</td></tr>
+            <tr><td class="ex-icon">🥊</td><td class="ex-name">ترکیب جاب، کراس، هوک</td><td class="ex-detail">3×2 دقیقه</td></tr>
+            <tr><td class="ex-icon">🦵</td><td class="ex-name">ضربات پا (سرعت کم، تکنیک درست)</td><td class="ex-detail">3×2 دقیقه</td></tr>
+            <tr><td class="ex-icon">👣</td><td class="ex-name">فوت‌ورک دور کیسه</td><td class="ex-detail">2×1 دقیقه</td></tr>
+          </table>
+        </div>
+
+        <div class="session-block recovery">
+          <div class="session-title">۴. آرامش — ۵ دقیقه</div>
+          <table class="ex-table">
+            <tr><td class="ex-icon">😴</td><td class="ex-name">دراز کشیدن، تنفس عمیق</td><td class="ex-detail">3 دقیقه</td></tr>
+            <tr><td class="ex-icon">🧘</td><td class="ex-name">کشش نهایی کل بدن</td><td class="ex-detail">2 دقیقه</td></tr>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div style="background: var(--card); border-radius: 10px; padding: 16px; border: 1px solid rgba(232,19,42,0.3); margin-top: 8px;">
+      <div style="font-size: 12px; font-weight: 700; color: var(--red); margin-bottom: 10px;">🎯 برای رسیدن به لگد ۱۸۰ درجه</div>
+      <div style="font-size: 13px; color: var(--gray); line-height: 1.8;">
+        پیژن پوز و اسپلیت جانبی رو هر روز انجام بده — حتی شب قبل از خواب.<br>
+        صبر داشته باش: انعطاف کامل ۳-۶ ماه زمان می‌بره.
+      </div>
+    </div>
+  </div>
+
+  <!-- GOALS TAB -->
+  <div id="tab-goals" class="tab-content">
+    <div class="section-title">اهداف و پیشرفت</div>
+
+    <div class="goals-grid">
+      <div class="goal-card">
+        <div class="goal-icon">⚖️</div>
+        <div class="goal-title">کاهش وزن</div>
+        <div class="goal-desc">از ۶۷ به ۶۰ کیلو<br>۷ کیلو در ۳-۴ ماه</div>
+      </div>
+      <div class="goal-card">
+        <div class="goal-icon">🦵</div>
+        <div class="goal-title">کشش ۱۸۰°</div>
+        <div class="goal-desc">کشش روزانه پیژن پوز و اسپلیت</div>
+      </div>
+      <div class="goal-card">
+        <div class="goal-icon">🏃</div>
+        <div class="goal-title">پیس هدف</div>
+        <div class="goal-desc">۸ کیلومتر<br>با پیس ۵:۳۰</div>
+      </div>
+      <div class="goal-card">
+        <div class="goal-icon">🥊</div>
+        <div class="goal-title">تکنیک</div>
+        <div class="goal-desc">بهترین شدن در وزن و سبک خودم</div>
+      </div>
+    </div>
+
+    <div class="section-title">پیشرفت دویدن</div>
+
+    <div class="progress-item">
+      <div class="progress-label"><span>پیس فعلی</span><span>5:30/km ✓</span></div>
+      <div class="progress-bar"><div class="progress-fill" style="width: 55%"></div></div>
+    </div>
+    <div class="progress-item">
+      <div class="progress-label"><span>هدف پیس</span><span>5:00/km</span></div>
+      <div class="progress-bar"><div class="progress-fill" style="width: 35%"></div></div>
+    </div>
+    <div class="progress-item">
+      <div class="progress-label"><span>مسافت فعلی</span><span>4 کیلومتر</span></div>
+      <div class="progress-bar"><div class="progress-fill" style="width: 50%"></div></div>
+    </div>
+    <div class="progress-item">
+      <div class="progress-label"><span>هدف مسافت</span><span>8 کیلومتر</span></div>
+      <div class="progress-bar"><div class="progress-fill" style="width: 25%"></div></div>
+    </div>
+
+    <div class="divider"></div>
+    <div class="section-title">برنامه زمانی</div>
+
+    <div style="position: relative; padding-right: 20px;">
+      <div style="position: absolute; right: 0; top: 0; bottom: 0; width: 2px; background: linear-gradient(180deg, var(--red), transparent);"></div>
+
+      <div style="margin-bottom: 20px; position: relative;">
+        <div style="position: absolute; right: -24px; top: 4px; width: 10px; height: 10px; background: var(--red); border-radius: 50%;"></div>
+        <div style="font-size: 11px; color: var(--red); letter-spacing: 1px; margin-bottom: 4px;">ماه ۱-۲</div>
+        <div style="font-size: 14px; font-weight: 600;">پایه‌گذاری</div>
+        <div style="font-size: 12px; color: var(--gray); margin-top: 4px;">تکنیک، استقامت پایه، کشش اولیه</div>
+      </div>
+
+      <div style="margin-bottom: 20px; position: relative;">
+        <div style="position: absolute; right: -24px; top: 4px; width: 10px; height: 10px; background: var(--gold); border-radius: 50%;"></div>
+        <div style="font-size: 11px; color: var(--gold); letter-spacing: 1px; margin-bottom: 4px;">ماه ۲-۳</div>
+        <div style="font-size: 14px; font-weight: 600;">توسعه</div>
+        <div style="font-size: 12px; color: var(--gray); margin-top: 4px;">افزایش مسافت، بهبود پیس، کاهش ۳-۴ کیلو</div>
+      </div>
+
+      <div style="margin-bottom: 20px; position: relative;">
+        <div style="position: absolute; right: -24px; top: 4px; width: 10px; height: 10px; background: #64c896; border-radius: 50%;"></div>
+        <div style="font-size: 11px; color: #64c896; letter-spacing: 1px; margin-bottom: 4px;">ماه ۳-۴</div>
+        <div style="font-size: 14px; font-weight: 600;">اوج</div>
+        <div style="font-size: 12px; color: var(--gray); margin-top: 4px;">رسیدن به ۶۰ کیلو، کشش ۱۸۰°، پیس ۵:۰۰</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TIPS TAB -->
+  <div id="tab-tips" class="tab-content">
+    <div class="section-title">نکات مربی</div>
+
+    <div class="tip-card">
+      <div class="tip-icon">🥊</div>
+      <div>
+        <div class="tip-title">تکنیک از همه چیز مهم‌تره</div>
+        <div class="tip-desc">چون تازه شروع کردی، قدرت و سرعت بعداً میان. ضربه غلط رو نمیشه با قدرت جبران کرد. هر ضربه رو درست بزن، حتی اگه آروم باشه.</div>
+      </div>
+    </div>
+
+    <div class="tip-card">
+      <div class="tip-icon">🔨</div>
+      <div>
+        <div class="tip-title">پتک رو از کمر و باسن بزن</div>
+        <div class="tip-desc">همیشه از کمر و باسن نیرو بگیر، نه فقط دست. وقتی خسته شدی فرم رو حفظ کن و سرعت رو کم کن.</div>
+      </div>
+    </div>
+
+    <div class="tip-card">
+      <div class="tip-icon">🕊️</div>
+      <div>
+        <div class="tip-title">پیژن پوز هر روز</div>
+        <div class="tip-desc">برای رسیدن به لگد ۱۸۰ درجه، پیژن پوز و اسپلیت جانبی رو هر روز انجام بده — حتی شب قبل از خواب. انعطاف کامل ۳-۶ ماه زمان می‌بره.</div>
+      </div>
+    </div>
+
+    <div class="tip-card">
+      <div class="tip-icon">☀️</div>
+      <div>
+        <div class="tip-title">تمرین صبح = بیدار کردن بدن</div>
+        <div class="tip-desc">صبح‌ها هیچ‌وقت تا خستگی نرو. باشگاه شب داری و انرژی می‌خوای. هدف آرامش و کشش و بیدار شدن بدنه.</div>
+      </div>
+    </div>
+
+    <div class="tip-card">
+      <div class="tip-icon">📈</div>
+      <div>
+        <div class="tip-title">پیشرفت تدریجی</div>
+        <div class="tip-desc">هر ۲ هفته مسافت دویدن رو ۴۰۰ متر اضافه کن و پیس رو ۱۰ ثانیه کم کن. عجله نکن — ۷ کیلو در ۳-۴ ماه هدف واقعیه.</div>
+      </div>
+    </div>
+
+    <div class="tip-card">
+      <div class="tip-icon">😴</div>
+      <div>
+        <div class="tip-title">جمعه استراحت واقعیه</div>
+        <div class="tip-desc">ریکاوری بخشی از تمرینه، نه تنبلی. بدون ریکاوری، عضله نمی‌سازی و چربی‌سوزی کند میشه.</div>
+      </div>
+    </div>
+
+    <div class="tip-card">
+      <div class="tip-icon">💧</div>
+      <div>
+        <div class="tip-title">آب کافی بخور</div>
+        <div class="tip-desc">با این حجم تمرین حداقل ۳ لیتر آب در روز. کم‌آبی عملکرد و چربی‌سوزی رو به شدت پایین میاره.</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="footer">
+  برنامه تمرینی کیک‌بوکس | ۲۱ ساله | ۶۷ کیلو → ۶۰ کیلو
+</div>
+
+<script>
+  function showTab(name) {
+    document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('tab-' + name).classList.add('active');
+    event.target.classList.add('active');
+  }
+
+  function toggleDay(card) {
+    card.classList.toggle('open');
+  }
+</script>
+
+<script>
+if ("serviceWorker" in navigator) {
+  navigator.serviceWorker.register("sw.js").then(() => console.log("SW registered"));
+}
+</script>
+</body>
+</html>
