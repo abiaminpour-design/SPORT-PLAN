@@ -1,0 +1,1208 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#E8132A">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="THE GOAT">
+<title>THE GOAT</title>
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --red: #E8132A;
+  --dark-red: #9B0F1E;
+  --black: #080808;
+  --dark: #0f0f0f;
+  --card: #161616;
+  --card2: #1e1e1e;
+  --gold: #C9A84C;
+  --white: #F0F0F0;
+  --gray: #666;
+  --border: #2a2a2a;
+  --green: #3ddc84;
+  --yellow: #ffb400;
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+html{scroll-behavior:smooth;}
+body{background:var(--black);color:var(--white);font-family:'Vazirmatn',sans-serif;min-height:100vh;overflow-x:hidden;}
+
+/* HERO */
+.hero{
+  background:var(--black);
+  padding:50px 20px 36px;
+  text-align:center;
+  position:relative;
+  overflow:hidden;
+}
+.hero::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse 80% 60% at 50% 0%, rgba(232,19,42,0.18) 0%, transparent 70%);
+  pointer-events:none;
+}
+.hero-eyebrow{
+  display:inline-flex;align-items:center;gap:8px;
+  background:rgba(232,19,42,0.1);
+  border:1px solid rgba(232,19,42,0.3);
+  border-radius:20px;padding:5px 14px;
+  font-size:10px;font-weight:700;letter-spacing:3px;color:var(--red);
+  margin-bottom:20px;
+}
+.hero-title{
+  font-size:clamp(42px,14vw,80px);
+  font-weight:900;line-height:0.95;
+  letter-spacing:-2px;position:relative;
+}
+.hero-title .the{font-size:0.4em;color:var(--gray);letter-spacing:4px;display:block;font-weight:300;margin-bottom:4px;}
+.hero-title .goat{
+  background:linear-gradient(135deg,#fff 30%,#E8132A 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.hero-sub{font-size:12px;color:var(--gray);margin-top:12px;letter-spacing:1px;}
+.hero-divider{
+  width:60px;height:2px;
+  background:linear-gradient(90deg,transparent,var(--red),transparent);
+  margin:20px auto;
+}
+.hero-stats{
+  display:grid;grid-template-columns:repeat(4,1fr);
+  gap:1px;background:var(--border);
+  border:1px solid var(--border);border-radius:12px;overflow:hidden;
+  margin-top:24px;
+}
+.hstat{
+  background:var(--card);padding:12px 6px;text-align:center;
+}
+.hstat-num{font-size:20px;font-weight:900;color:var(--white);}
+.hstat-num span{font-size:11px;color:var(--red);}
+.hstat-lbl{font-size:9px;color:var(--gray);margin-top:2px;letter-spacing:0.5px;}
+
+/* NAV */
+.nav-wrap{position:sticky;top:0;z-index:100;background:rgba(8,8,8,0.95);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);}
+.nav{display:flex;gap:0;overflow-x:auto;scrollbar-width:none;}
+.nav::-webkit-scrollbar{display:none;}
+.nav-btn{
+  background:none;border:none;color:var(--gray);
+  font-family:'Vazirmatn',sans-serif;font-size:12px;font-weight:600;
+  padding:14px 16px;cursor:pointer;white-space:nowrap;
+  border-bottom:2px solid transparent;transition:all 0.2s;position:relative;
+}
+.nav-btn.active{color:var(--white);border-bottom-color:var(--red);}
+.nav-btn:hover:not(.active){color:var(--white);}
+
+/* CONTENT */
+.content{max-width:600px;margin:0 auto;padding:20px 14px 80px;}
+.tab-content{display:none;}
+.tab-content.active{display:block;animation:fadeUp 0.3s ease;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:translateY(0);}}
+
+/* SECTION TITLE */
+.sec-title{
+  font-size:10px;font-weight:700;letter-spacing:3px;color:var(--red);
+  text-transform:uppercase;margin-bottom:16px;
+  display:flex;align-items:center;gap:10px;
+}
+.sec-title::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,var(--red),transparent);}
+
+/* DAY CARD */
+.day-card{
+  background:var(--card);border-radius:14px;margin-bottom:10px;
+  border:1px solid var(--border);transition:border-color 0.2s;overflow:hidden;
+}
+.day-card:hover{border-color:#3a3a3a;}
+.day-card.open{border-color:rgba(232,19,42,0.3);}
+.day-header{
+  display:flex;align-items:center;gap:12px;
+  padding:14px 16px;cursor:pointer;user-select:none;
+}
+.day-badge{
+  width:40px;height:40px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:15px;font-weight:900;flex-shrink:0;border-radius:10px;
+  background:var(--card2);color:var(--red);
+}
+.day-badge.gym{background:rgba(201,168,76,0.12);color:var(--gold);}
+.day-badge.recovery{background:rgba(61,220,132,0.08);color:var(--green);}
+.day-info{flex:1;min-width:0;}
+.day-name{font-size:15px;font-weight:700;}
+.day-sub{font-size:10px;color:var(--gray);margin-top:2px;}
+.day-tags{display:flex;gap:5px;flex-wrap:wrap;margin-right:4px;}
+.tag{font-size:9px;font-weight:700;padding:3px 8px;border-radius:20px;letter-spacing:0.3px;}
+.t-gym{background:rgba(201,168,76,0.12);color:var(--gold);border:1px solid rgba(201,168,76,0.2);}
+.t-cardio{background:rgba(232,19,42,0.1);color:#ff6b7a;border:1px solid rgba(232,19,42,0.2);}
+.t-speed{background:rgba(100,200,255,0.08);color:#64c8ff;border:1px solid rgba(100,200,255,0.15);}
+.t-strength{background:rgba(150,100,255,0.08);color:#b47cff;border:1px solid rgba(150,100,255,0.15);}
+.t-recovery{background:rgba(61,220,132,0.08);color:var(--green);border:1px solid rgba(61,220,132,0.15);}
+.t-morning{background:rgba(255,200,50,0.08);color:#ffc832;border:1px solid rgba(255,200,50,0.15);}
+.chevron{color:#444;font-size:16px;transition:transform 0.3s;flex-shrink:0;}
+.day-card.open .chevron{transform:rotate(180deg);}
+.day-body{display:none;padding:0 14px 16px;}
+.day-card.open .day-body{display:block;}
+
+/* SESSION BLOCK */
+.session-block{
+  background:var(--card2);border-radius:10px;
+  padding:12px 14px;margin-bottom:10px;
+  border-right:3px solid var(--red);
+}
+.session-block.morning{border-right-color:var(--gold);}
+.session-block.recovery{border-right-color:var(--green);}
+.session-title{
+  font-size:10px;font-weight:700;letter-spacing:2px;
+  color:var(--gray);margin-bottom:10px;
+}
+.session-block.morning .session-title{color:var(--gold);}
+.session-block.recovery .session-title{color:var(--green);}
+
+/* EX TABLE */
+.ex-table{width:100%;border-collapse:collapse;}
+.ex-table tr{border-bottom:1px solid rgba(255,255,255,0.04);transition:background 0.15s;}
+.ex-table tr:last-child{border-bottom:none;}
+.ex-table td{padding:8px 3px;font-size:12px;vertical-align:middle;}
+.ex-icon{width:22px;text-align:center;font-size:13px;opacity:0.6;}
+.ex-name{color:var(--white);font-weight:500;padding-right:4px;}
+.ex-detail{color:#555;font-size:11px;text-align:left;direction:ltr;}
+/* check */
+.ex-check{width:32px;text-align:center;}
+.ex-check-btn{
+  width:28px;height:28px;border-radius:7px;
+  border:1.5px solid #2a2a2a;background:transparent;
+  cursor:pointer;font-size:13px;
+  display:inline-flex;align-items:center;justify-content:center;
+  transition:all 0.15s;padding:0;
+}
+.ex-check-btn[data-s="1"]{background:rgba(61,220,132,0.12);border-color:var(--green);}
+.ex-check-btn[data-s="2"]{background:rgba(232,19,42,0.1);border-color:var(--red);}
+.ex-table tr[data-s="1"] .ex-name{color:var(--green);opacity:0.65;text-decoration:line-through;}
+.ex-table tr[data-s="2"] .ex-name{color:var(--red);opacity:0.5;}
+
+/* RUN CARD */
+.run-card{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:8px;}
+.run-phase{background:rgba(255,255,255,0.03);border-radius:8px;padding:10px 6px;text-align:center;border:1px solid var(--border);}
+.run-phase-name{font-size:9px;color:var(--gray);letter-spacing:1px;margin-bottom:4px;}
+.run-dist{font-size:18px;font-weight:900;color:var(--white);}
+.run-unit{font-size:9px;color:var(--gray);}
+.run-pace{font-size:12px;font-weight:700;color:var(--red);margin-top:3px;direction:ltr;}
+
+/* GOALS */
+.goals-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:16px;}
+.goal-card{background:var(--card);border-radius:12px;padding:16px;border:1px solid var(--border);text-align:center;}
+.goal-icon{font-size:26px;margin-bottom:8px;}
+.goal-title{font-size:13px;font-weight:700;margin-bottom:4px;}
+.goal-desc{font-size:11px;color:var(--gray);line-height:1.5;}
+.progress-item{margin-bottom:14px;}
+.progress-label{display:flex;justify-content:space-between;font-size:12px;margin-bottom:5px;}
+.progress-label span:first-child{font-weight:600;}
+.progress-label span:last-child{color:var(--red);font-weight:700;}
+.progress-bar{height:5px;background:var(--border);border-radius:3px;overflow:hidden;}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--dark-red),var(--red));border-radius:3px;transition:width 1s ease;}
+
+/* TIP CARD */
+.tip-card{
+  background:var(--card);border-radius:12px;padding:14px 16px;
+  margin-bottom:10px;display:flex;gap:12px;align-items:flex-start;
+  border:1px solid var(--border);
+}
+.tip-icon{font-size:20px;flex-shrink:0;margin-top:1px;}
+.tip-title{font-size:13px;font-weight:700;margin-bottom:3px;}
+.tip-desc{font-size:12px;color:var(--gray);line-height:1.6;}
+
+/* JOURNAL */
+.week-nav{
+  display:flex;align-items:center;justify-content:space-between;
+  background:var(--card);border-radius:12px;padding:10px 14px;
+  border:1px solid var(--border);margin-bottom:12px;
+}
+.week-nav-btn{
+  background:rgba(232,19,42,0.08);border:1px solid rgba(232,19,42,0.2);
+  color:var(--red);font-size:20px;cursor:pointer;
+  padding:3px 12px;border-radius:8px;line-height:1;
+}
+.j-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:12px;}
+.jstat{background:var(--card);border-radius:10px;padding:10px 4px;text-align:center;border:1px solid var(--border);}
+.jstat-num{font-size:20px;font-weight:900;}
+.jstat-lbl{font-size:9px;color:var(--gray);margin-top:1px;}
+.chart-wrap{background:var(--card);border-radius:12px;padding:14px;margin-bottom:12px;border:1px solid var(--border);}
+.chart-title{font-size:9px;font-weight:700;color:var(--gray);letter-spacing:2px;margin-bottom:10px;}
+.chart-bars{display:flex;align-items:flex-end;gap:4px;height:64px;}
+.chart-labels{display:flex;gap:4px;margin-top:4px;}
+.jday-card{background:var(--card);border-radius:12px;margin-bottom:8px;border:1px solid var(--border);overflow:hidden;transition:border-color 0.2s;}
+.jday-top{display:flex;align-items:center;gap:10px;padding:12px 14px;}
+.jday-icon{width:40px;height:40px;border-radius:9px;background:var(--card2);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;}
+.jday-btns{display:flex;border-top:1px solid rgba(255,255,255,0.04);}
+.jday-btn{flex:1;border:none;padding:9px 4px;cursor:pointer;background:transparent;color:#444;font-size:10px;font-weight:600;font-family:'Vazirmatn',sans-serif;display:flex;flex-direction:column;align-items:center;gap:2px;transition:all 0.2s;border-top:2px solid transparent;}
+.jday-btn:not(:last-child){border-left:1px solid rgba(255,255,255,0.04);}
+.jday-mini{padding:7px 14px 10px;border-top:1px solid rgba(255,255,255,0.04);}
+.type-row{margin-bottom:12px;}
+
+/* ── REPORT TAB ── */
+.rpt-header{
+  display:flex;align-items:flex-start;justify-content:space-between;
+  padding-bottom:16px;border-bottom:1.5px solid var(--white);margin-bottom:20px;
+}
+.rpt-brand{font-size:9px;font-weight:700;letter-spacing:3px;color:var(--gray);margin-bottom:4px;}
+.rpt-title{font-size:24px;font-weight:900;color:var(--white);line-height:1;letter-spacing:-0.5px;}
+.rpt-title span{color:var(--red);}
+.rpt-day-num{font-size:48px;font-weight:900;color:#2a2a2a;line-height:1;letter-spacing:-2px;text-align:left;}
+.rpt-day-lbl{font-size:9px;color:var(--gray);letter-spacing:2px;text-align:center;margin-top:2px;}
+.rpt-meta{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:20px;}
+.rpt-meta-field label{font-size:9px;font-weight:700;letter-spacing:2px;color:var(--gray);display:block;margin-bottom:4px;}
+.rpt-meta-field input{
+  width:100%;background:none;border:none;border-bottom:1px solid var(--border);
+  font-family:'Vazirmatn',sans-serif;font-size:13px;font-weight:600;color:var(--white);
+  padding:4px 0;outline:none;
+}
+.rpt-meta-field input::placeholder{color:#333;}
+.rpt-section-title{
+  font-size:9px;font-weight:700;letter-spacing:3px;color:var(--gray);
+  text-transform:uppercase;margin-bottom:10px;
+  display:flex;align-items:center;gap:8px;
+}
+.rpt-section-title::after{content:'';flex:1;height:1px;background:var(--border);}
+.rpt-checklist{margin-bottom:20px;}
+.rpt-check-row{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:11px 0;border-bottom:1px solid var(--border);
+}
+.rpt-check-row:last-child{border-bottom:none;}
+.rpt-check-lbl{font-size:13px;font-weight:500;color:var(--white);flex:1;}
+.rpt-tick{
+  width:28px;height:28px;border-radius:6px;border:1.5px solid var(--border);
+  background:none;color:transparent;font-size:14px;cursor:pointer;
+  flex-shrink:0;transition:all 0.15s;display:flex;align-items:center;justify-content:center;
+}
+.rpt-tick[data-s="1"]{background:var(--green);border-color:var(--green);color:#000;}
+.rpt-tick[data-s="2"]{background:var(--red);border-color:var(--red);color:#fff;}
+.rpt-workout-list{margin-bottom:20px;}
+.rpt-workout-row{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:9px 0;border-bottom:1px solid var(--border);
+}
+.rpt-workout-row:last-child{border-bottom:none;}
+.rpt-workout-name{font-size:12px;font-weight:600;color:var(--white);}
+.rpt-workout-detail{font-size:10px;color:var(--gray);direction:ltr;text-align:left;margin-top:2px;}
+.rpt-ex-status{font-size:11px;font-weight:700;}
+.rpt-ex-status.done{color:var(--green);}
+.rpt-ex-status.skip{color:var(--red);}
+.rpt-ex-status.none{color:#333;}
+.rpt-score-row{
+  display:flex;align-items:center;gap:12px;
+  background:var(--card);border:1px solid var(--border);
+  border-radius:8px;padding:12px 14px;margin-bottom:20px;
+}
+.rpt-score-label{font-size:10px;color:var(--gray);font-weight:600;white-space:nowrap;}
+.rpt-score-bar-wrap{flex:1;}
+.rpt-score-bar{height:4px;background:var(--border);border-radius:2px;overflow:hidden;}
+.rpt-score-fill{height:100%;background:var(--white);border-radius:2px;transition:width 0.4s;}
+.rpt-score-val{font-size:22px;font-weight:900;color:var(--white);white-space:nowrap;}
+.rpt-score-val small{font-size:11px;color:var(--gray);font-weight:400;}
+.rpt-mood-row{display:grid;grid-template-columns:repeat(5,1fr);gap:5px;margin-bottom:20px;}
+.rpt-mood-btn{
+  display:flex;flex-direction:column;align-items:center;gap:3px;
+  padding:8px 4px;border:1px solid var(--border);border-radius:8px;
+  background:none;cursor:pointer;transition:all 0.15s;font-family:'Vazirmatn',sans-serif;
+}
+.rpt-mood-btn.rpt-active{border-color:var(--white);background:rgba(255,255,255,0.06);}
+.rpt-mood-emoji{font-size:18px;}
+.rpt-mood-lbl{font-size:9px;color:var(--gray);font-weight:600;}
+.rpt-mood-btn.rpt-active .rpt-mood-lbl{color:var(--white);}
+.rpt-fields{margin-bottom:20px;}
+.rpt-field{margin-bottom:12px;}
+.rpt-field label{font-size:9px;font-weight:700;letter-spacing:2px;color:var(--gray);display:block;margin-bottom:6px;}
+.rpt-field textarea{
+  width:100%;background:var(--card);border:1px solid var(--border);border-radius:6px;
+  font-family:'Vazirmatn',sans-serif;font-size:12px;color:var(--white);
+  padding:9px 11px;resize:none;outline:none;line-height:1.7;
+}
+.rpt-field textarea::placeholder{color:#333;}
+.rpt-footer{
+  display:flex;align-items:center;justify-content:space-between;
+  padding-top:16px;border-top:1.5px solid var(--white);
+}
+.rpt-sig{font-size:9px;color:var(--gray);letter-spacing:1px;}
+.rpt-sig-line{width:100px;height:1px;background:var(--border);margin-top:18px;}
+.rpt-btns{display:flex;gap:6px;}
+.rpt-print-btn{
+  background:var(--white);color:var(--black);border:none;
+  font-family:'Vazirmatn',sans-serif;font-size:11px;font-weight:700;
+  letter-spacing:0.5px;padding:9px 16px;border-radius:6px;cursor:pointer;
+  transition:opacity 0.2s;
+}
+.rpt-print-btn:hover{opacity:0.85;}
+.rpt-reset-btn{
+  background:none;color:var(--gray);border:1px solid var(--border);
+  font-family:'Vazirmatn',sans-serif;font-size:10px;font-weight:600;
+  padding:7px 12px;border-radius:6px;cursor:pointer;
+}
+
+@media print{
+  .nav-wrap,.hero,.footer,.rpt-btns{display:none!important;}
+  body{background:white!important;color:#000!important;padding:0;}
+  .tab-content{display:none!important;}
+  #tab-journal{display:block!important;}
+  .content{padding:20px!important;}
+  .rpt-title,.rpt-check-lbl,.rpt-workout-name,.rpt-score-val{color:#000!important;}
+  .rpt-header{border-bottom-color:#000!important;}
+  .rpt-footer{border-top-color:#000!important;}
+  .rpt-day-num{color:#ddd!important;}
+  .rpt-box{border-color:#999!important;}
+  .rpt-check-row.rpt-done .rpt-box{background:#000!important;color:#fff!important;}
+  .rpt-score-fill{background:#000!important;}
+  textarea{border-color:#ccc!important;background:white!important;color:#000!important;}
+}
+
+/* FOOTER */
+.footer{text-align:center;padding:16px;color:#333;font-size:10px;border-top:1px solid var(--border);}
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-eyebrow">🥊 KICKBOXING PROGRAM</div>
+  <div class="hero-title">
+    <span class="the">THE</span>
+    <span class="goat">GOAT</span>
+  </div>
+  <div class="hero-sub">برنامه تمرینی حرفه‌ای کیک‌بوکس</div>
+  <div class="hero-divider"></div>
+  <div class="hero-stats">
+    <div class="hstat"><div class="hstat-num">۷</div><div class="hstat-lbl">روز/هفته</div></div>
+    <div class="hstat"><div class="hstat-num">۶۷<span>→۶۰</span></div><div class="hstat-lbl">هدف وزن</div></div>
+    <div class="hstat"><div class="hstat-num">۱۸۰<span>°</span></div><div class="hstat-lbl">هدف کشش</div></div>
+    <div class="hstat"><div class="hstat-num">۲۱</div><div class="hstat-lbl">سال</div></div>
+  </div>
+</div>
+
+<!-- NAV -->
+<div class="nav-wrap">
+<nav class="nav">
+  <button class="nav-btn active" onclick="showTab('weekly',this)">هفتگی</button>
+  <button class="nav-btn" onclick="showTab('morning',this)">صبحگاهی</button>
+  <button class="nav-btn" onclick="showTab('goals',this)">اهداف</button>
+  <button class="nav-btn" onclick="showTab('journal',this)">⚔️ گزارش روزانه</button>
+</nav>
+</div>
+
+<div class="content">
+
+<!-- ===== WEEKLY ===== -->
+<div id="tab-weekly" class="tab-content active">
+  <div class="sec-title">برنامه هفتگی</div>
+
+  <!-- شنبه -->
+  <div class="day-card" onclick="toggleDay(this)">
+    <div class="day-header">
+      <div class="day-badge">ش</div>
+      <div class="day-info"><div class="day-name">شنبه</div><div class="day-sub">استقامت + هوازی</div></div>
+      <div class="day-tags"><span class="tag t-cardio">هوازی</span></div>
+      <div class="chevron">▼</div>
+    </div>
+    <div class="day-body">
+      <div class="session-block">
+        <div class="session-title">🏃 دویدن</div>
+        <div class="run-card">
+          <div class="run-phase"><div class="run-phase-name">گرم کردن</div><div class="run-dist">۴۰۰<span class="run-unit">م</span></div><div class="run-pace">6:30/km</div></div>
+          <div class="run-phase"><div class="run-phase-name">اصلی</div><div class="run-dist">۴<span class="run-unit">کم</span></div><div class="run-pace">5:45/km</div></div>
+          <div class="run-phase"><div class="run-phase-name">سرد کردن</div><div class="run-dist">۴۰۰<span class="run-unit">م</span></div><div class="run-pace">7:00/km</div></div>
+        </div>
+      </div>
+      <div class="session-block">
+        <div class="session-title">💪 قدرتی هوازی</div>
+        <table class="ex-table" data-day="sat">
+          <tr><td class="ex-icon">🔗</td><td class="ex-name">کشیدن لاستیک</td><td class="ex-detail">4×40م</td><td class="ex-check"><button class="ex-check-btn" data-s="0"></button></td></tr>
+          <tr><td class="ex-icon">🔨</td><td class="ex-name">پتک استقامتی</td><td class="ex-detail">5×40 ضربه|30ث</td><td class="ex-check"><button class="ex-check-btn" data-s="0"></button></td></tr>
+          <tr><td class="ex-icon">🪢</td><td class="ex-name">طناب</td><td class="ex-detail">3×2 دقیقه</td><td class="ex-check"><button class="ex-check-btn" data-s="0"></button></td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- یکشنبه -->
+  <div class="day-card" onclick="toggleDay(this)">
+    <div class="day-header">
+      <div class="day-badge gym">۱</div>
+      <div class="day-info"><div class="day-name">یکشنبه</div><div class="day-sub">صبح: کشش + کیسه | شب: باشگاه ۹-۱۱</div></div>
+      <div class="day-tags"><span class="tag t-morning">صبح</span><span class="tag t-gym">باشگاه</span></div>
+      <div class="chevron">▼</div>
+    </div>
+    <div class="day-body">
+      <div class="session-block morning">
+        <div class="session-title">☀️ تمرین صبح (۴۵ دقیقه)</div>
+        <table class="ex-table" data-day="sun-m">
+          <tr><td class="ex-icon">🔥</td><td class="ex-name">گرم کردن</td><td class="ex-detail">10 دقیقه</td><td class="ex-check"><button class="ex-check-btn" data-s="0"></button></td></tr>
+          <tr><td class="ex-icon">🧘</td><td class="ex-name">کشش (پیژن پوز، اسپلیت، پروانه)</td><td class="ex-detail">20 دقیقه</td><td class="ex-check"><button class="ex-check-btn" data-s="0"></button></td></tr>
+          <tr><td class="ex-icon">🥊</td><td class="ex-name">کیسه بوکس تکنیکی</td><td class="ex-detail">20 دقیقه</td><td class="ex-check"><button class="ex-check-btn" data-s="0"></button></td></tr>
+          <tr><td class="ex-icon">🌬️</td><td class="ex-name">تنفس و آرامش</td><td class="ex-detail">5 دقیقه</td><td class="ex-check"><button class="ex-check-btn" data-s="0"></button></td></tr>
+        </table>
+      </div>
+      <div class="session-block">
+        <div class="session-title">🥋 باشگاه شب</div>
+        <table class="ex-table" data-day="sun-e">
+          <tr><td class="ex-icon">⏰</td><td class="ex-name">ساعت ۹ تا ۱۱ شب</td><td class="ex-detail"></td><td class="ex-check"><button class="ex-check-btn" data-s="0"></button></td></tr>
+          <tr><td class="ex-icon">🎯</td><td class="ex-name">تکنیک + اسپارینگ</td><td class="ex-detail"></td><td class="ex-check"><button class="ex-check-btn" data-s="0"></button></td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- دوشنبه -->
+  <div class="day-card" onclick="toggleDay(this)">
+    <div class="day-header">
+      <div class="day-badge">د</div>
+      <div class="day-info"><div class="day-name">دوشنبه</div><div class="day-sub">سرعت و انفجار</div></div>
+      <div class="day-tags"><span class="tag t-speed">سرعت</span></div>
+      <div class="chevron">▼</div>
+    </div>
+    <div class="day-body">
+      <div class="session-block">
+        <div class="session-title">⚡ سرعت و انفجار (۴۵ دقیقه)</div>
+        <table class="ex-table" data-day="mon">
+          <tr><td class="ex-icon">🔥</td><td class="ex-name">گرم کردن</td><td class="ex-detail">5 دقیقه</td><td class="ex-check"><button class="ex-check-btn" data-s="0"></button></td></tr>
+          <tr><td class="ex-icon">💨</td><td class="ex-name">اسپرینت ۱۰۰ متر</td><td class="ex-detail">8×100م|45ث</td><td class="ex-check"><button class="ex-check-btn" data-s="0"></button></td></tr>
+          <tr><td class="ex-icon">🔨</td><td class="ex-name">پتک سرعتی</td><td class="ex-detail">8×20ث|20ث</td><td class="ex-check"><button class="ex-check-btn" data-s="0"></button></td></tr>
+          <tr><td class="ex-icon">🪜</td><td class="ex-name">نردبان معلق</td><td class="ex-detail">5×رفت وبرگشت</td><td class="ex-check"><button class="ex-check-btn" data-s="0"></button></td></tr>
+          <tr><td class="ex-icon">🪢</td><td class="ex-name">طناب سرعتی</td><td class="ex-detail">8×30ث|30ث</td><td class="ex-check"><button class="ex-check-btn" data-s="0"></button></td></tr>
+          <tr><td class="ex-icon">❄️</td><td class="ex-name">سرد کردن</td><td class="ex-detail">5 دقیقه</td><td class="ex-check"><button class="ex-check-btn" data-s="0"></button></td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- سه‌شنبه -->
+  <div class="day-card" onclick="toggleDay(this)">
+    <div class="day-header">
+      <div class="day-badge gym">۳</div>
+      <div class="day-info"><div class="day-name">سه‌شنبه</div><div class="day-sub">صبح: کشش + کیسه | شب: باشگاه ۹-۱۱</div></div>
+      <div class="day-tags"><span class="tag t-morning">صبح</span><span class="tag t-gym">باشگاه</span></div>
+      <div class="chevron">▼</div>
+    </div>
+    <div class="day-body">
+      <div class="session-block morning">
+        <div class="session-title">☀️ تمرین صبح (۴۵ دقیقه)</div>
+        <table class="ex-table" data-day="tue-m">
+          <tr><td class="ex-icon">🔥</td><td class="ex-name">گرم کردن</td><td class="ex-detail">10 دقیقه</td><td class="ex-check"><button class="ex-check-btn" data-s="0"></button></td></tr>
+          <tr><td class="ex-icon">🧘</td><td class="ex-name">کشش (پیژن پوز، اسپلیت، پروانه)</td><td class="ex-detail">20 دقیقه</td><td class="ex-check"><button class="ex-check-btn" data-s="0"></button></td></tr>
+          <tr><td class="ex-icon">🥊</td><td class="ex-name">کیسه بوکس تکنیکی</td><td class="ex-detail">20 دقیقه</td><td class="ex-check"><button class="ex-check-btn" data-s="0"></button></td></tr>
+          <tr><td class="ex-icon">🌬️</td><td class="ex-name">تنفس و آرامش</td><td class="ex-detail">5 دقیقه</td><td class="ex-check"><button class="ex-check-btn" data-s="0"></button></td></tr>
+        </table>
+      </div>
+      <div class="session-block">
+        <div class="session-title">🥋 باشگاه شب</div>
+        <table class="ex-table" data-day="tue-e">
+          <tr><td class="ex-icon">⏰</td><td class="ex-name">ساعت ۹ تا ۱۱ شب</td><td class="ex-detail"></td><td class="ex-check"><button class="ex-check-btn" data-s="0"></button></td></tr>
+          <tr><td class="ex-icon">🎯</td><td class="ex-name">ترکیب ضربات + فوت‌ورک</td><td class="ex-detail"></td><td class="ex-check"><button class="ex-check-btn" data-s="0"></button></td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- چهارشنبه -->
+  <div class="day-card" onclick="toggleDay(this)">
+    <div class="day-header">
+      <div class="day-badge">چ</div>
+      <div class="day-info"><div class="day-name">چهارشنبه</div><div class="day-sub">قدرت استقامتی انفجاری</div></div>
+      <div class="day-tags"><span class="tag t-strength">قدرت</span><span class="tag t-cardio">هوازی</span></div>
+      <div class="chevron">▼</div>
+    </div>
+    <div class="day-body">
+      <div class="session-block">
+        <div class="session-title">🏃 تمپو ران</div>
+        <div class="run-card">
+          <div class="run-phase"><div class="run-phase-name">گرم کردن</div><div class="run-dist">۴۰۰<span class="run-unit">م</span></div><div class="run-pace">6:30/km</div></div>
+          <div class="run-phase"><div class="run-phase-name">تمپو</div><div class="run-dist">۳<span class="run-unit">کم</span></div><div class="run-pace">5:00/km</div></div>
+          <div class="run-phase"><div class="run-phase-name">سرد کردن</div><div class="run-dist">۴۰۰<span class="run-unit">م</span></div><div class="run-pace">7:00/km</div></div>
+        </div>
+      </div>
+      <div class="session-block">
+        <div class="session-title">💪 قدرت انفجاری — سنگین‌ترین روز</div>
+        <table class="ex-table" data-day="wed">
+          <tr><td class="ex-icon">🪵</td><td class="ex-name">کنده ۲۰ کیلو (حمل)</td><td class="ex-detail">3×100م</td><td class="ex-check"><button class="ex-check-btn" data-s="0"></button></td></tr>
+          <tr><td class="ex-icon">🔨</td><td class="ex-name">پتک قدرتی آروم و سنگین</td><td class="ex-detail">4×30|هر طرف</td><td class="ex-check"><button class="ex-check-btn" data-s="0"></button></td></tr>
+          <tr><td class="ex-icon">🔗</td><td class="ex-name">کشیدن لاستیک سرعتی</td><td class="ex-detail">4×40م</td><td class="ex-check"><button class="ex-check-btn" data-s="0"></button></td></tr>
+          <tr><td class="ex-icon">🤸</td><td class="ex-name">دار حلقه</td><td class="ex-detail">3×حداکثر</td><td class="ex-check"><button class="ex-check-btn" data-s="0"></button></td></tr>
+          <tr><td class="ex-icon">🔨</td><td class="ex-name">پتک فینیشر</td><td class="ex-detail">3×15ث|45ث</td><td class="ex-check"><button class="ex-check-btn" data-s="0"></button></td></tr>
+          <tr><td class="ex-icon">❄️</td><td class="ex-name">سرد کردن</td><td class="ex-detail">5 دقیقه</td><td class="ex-check"><button class="ex-check-btn" data-s="0"></button></td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- پنجشنبه -->
+  <div class="day-card" onclick="toggleDay(this)">
+    <div class="day-header">
+      <div class="day-badge gym">۵</div>
+      <div class="day-info"><div class="day-name">پنجشنبه</div><div class="day-sub">صبح: کشش + کیسه | شب: باشگاه ۹-۱۱</div></div>
+      <div class="day-tags"><span class="tag t-morning">صبح</span><span class="tag t-gym">باشگاه</span></div>
+      <div class="chevron">▼</div>
+    </div>
+    <div class="day-body">
+      <div class="session-block morning">
+        <div class="session-title">☀️ تمرین صبح (۴۵ دقیقه)</div>
+        <table class="ex-table" data-day="thu-m">
+          <tr><td class="ex-icon">🔥</td><td class="ex-name">گرم کردن</td><td class="ex-detail">10 دقیقه</td><td class="ex-check"><button class="ex-check-btn" data-s="0"></button></td></tr>
+          <tr><td class="ex-icon">🧘</td><td class="ex-name">کشش (پیژن پوز، اسپلیت، پروانه)</td><td class="ex-detail">20 دقیقه</td><td class="ex-check"><button class="ex-check-btn" data-s="0"></button></td></tr>
+          <tr><td class="ex-icon">🥊</td><td class="ex-name">کیسه بوکس تکنیکی</td><td class="ex-detail">20 دقیقه</td><td class="ex-check"><button class="ex-check-btn" data-s="0"></button></td></tr>
+          <tr><td class="ex-icon">🌬️</td><td class="ex-name">تنفس و آرامش</td><td class="ex-detail">5 دقیقه</td><td class="ex-check"><button class="ex-check-btn" data-s="0"></button></td></tr>
+        </table>
+      </div>
+      <div class="session-block">
+        <div class="session-title">🥋 باشگاه شب</div>
+        <table class="ex-table" data-day="thu-e">
+          <tr><td class="ex-icon">⏰</td><td class="ex-name">ساعت ۹ تا ۱۱ شب</td><td class="ex-detail"></td><td class="ex-check"><button class="ex-check-btn" data-s="0"></button></td></tr>
+          <tr><td class="ex-icon">🎯</td><td class="ex-name">اسپارینگ + تکنیک پا</td><td class="ex-detail"></td><td class="ex-check"><button class="ex-check-btn" data-s="0"></button></td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- جمعه -->
+  <div class="day-card" onclick="toggleDay(this)">
+    <div class="day-header">
+      <div class="day-badge recovery">ج</div>
+      <div class="day-info"><div class="day-name">جمعه</div><div class="day-sub">ریکاوری فعال</div></div>
+      <div class="day-tags"><span class="tag t-recovery">ریکاوری</span></div>
+      <div class="chevron">▼</div>
+    </div>
+    <div class="day-body">
+      <div class="session-block recovery">
+        <div class="session-title">🌿 ریکاوری فعال</div>
+        <table class="ex-table" data-day="fri">
+          <tr><td class="ex-icon">🚶</td><td class="ex-name">پیاده‌روی سبک</td><td class="ex-detail">20 دقیقه</td><td class="ex-check"><button class="ex-check-btn" data-s="0"></button></td></tr>
+          <tr><td class="ex-icon">🧘</td><td class="ex-name">کشش کامل بدن</td><td class="ex-detail">20 دقیقه</td><td class="ex-check"><button class="ex-check-btn" data-s="0"></button></td></tr>
+          <tr><td class="ex-icon">🌬️</td><td class="ex-name">تنفس و آرامش</td><td class="ex-detail">10 دقیقه</td><td class="ex-check"><button class="ex-check-btn" data-s="0"></button></td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ===== MORNING ===== -->
+<div id="tab-morning" class="tab-content">
+  <div class="sec-title">تمرین صبحگاهی</div>
+
+  <div style="background:rgba(201,168,76,0.06);border:1px solid rgba(201,168,76,0.2);border-radius:10px;padding:12px 14px;margin-bottom:14px;">
+    <div style="font-size:12px;color:var(--gold);font-weight:700;margin-bottom:4px;">⚠️ قانون صبح</div>
+    <div style="font-size:11px;color:var(--gray);line-height:1.7;">هدف آرامش و بیدار شدن بدنه، نه خستگی. باشگاه شب داری!</div>
+  </div>
+
+  <div class="day-card open">
+    <div class="day-header" onclick="toggleDay(this.parentElement)">
+      <div class="day-badge gym" style="font-size:20px;">☀️</div>
+      <div class="day-info"><div class="day-name">صبح روزهای باشگاه (۴۵-۶۰ دقیقه)</div><div class="day-sub">یکشنبه | سه‌شنبه | پنجشنبه</div></div>
+      <div class="chevron">▼</div>
+    </div>
+    <div class="day-body">
+      <div class="session-block morning">
+        <div class="session-title">۱. گرم کردن — ۱۰ دقیقه</div>
+        <table class="ex-table">
+          <tr><td class="ex-icon">🚶</td><td class="ex-name">پیاده‌روی آروم</td><td class="ex-detail">3 دقیقه</td></tr>
+          <tr><td class="ex-icon">🔄</td><td class="ex-name">چرخش گردن و شانه</td><td class="ex-detail">1 دقیقه</td></tr>
+          <tr><td class="ex-icon">🔄</td><td class="ex-name">چرخش لگن</td><td class="ex-detail">1 دقیقه</td></tr>
+          <tr><td class="ex-icon">🦵</td><td class="ex-name">اسکوات سبک</td><td class="ex-detail">20 تکرار</td></tr>
+          <tr><td class="ex-icon">🦵</td><td class="ex-name">لانج رفت و برگشت</td><td class="ex-detail">10 هر پا</td></tr>
+        </table>
+      </div>
+      <div class="session-block morning">
+        <div class="session-title">۲. کشش — ۲۰ دقیقه (هدف: لگد ۱۸۰°)</div>
+        <table class="ex-table">
+          <tr><td class="ex-icon">🦋</td><td class="ex-name">کشش کشاله ران (پروانه)</td><td class="ex-detail">3×30ث</td></tr>
+          <tr><td class="ex-icon">🦵</td><td class="ex-name">اسپلیت جانبی (پای باز)</td><td class="ex-detail">3×45ث</td></tr>
+          <tr><td class="ex-icon">🦵</td><td class="ex-name">کشش همسترینگ ایستاده</td><td class="ex-detail">3×30ث</td></tr>
+          <tr><td class="ex-icon">🔄</td><td class="ex-name">لانج عمیق با چرخش</td><td class="ex-detail">3×30ث هر طرف</td></tr>
+          <tr><td class="ex-icon">🦵</td><td class="ex-name">کشش چهارسر دمر</td><td class="ex-detail">3×30ث</td></tr>
+          <tr><td class="ex-icon">🕊️</td><td class="ex-name">پیژن پوز (کبوتر)</td><td class="ex-detail">3×45ث هر طرف</td></tr>
+          <tr><td class="ex-icon">🧘</td><td class="ex-name">کشش کمر (حالت بچه)</td><td class="ex-detail">2×45ث</td></tr>
+        </table>
+      </div>
+      <div class="session-block morning">
+        <div class="session-title">۳. کیسه بوکس — ۲۰ دقیقه</div>
+        <table class="ex-table">
+          <tr><td class="ex-icon">🥊</td><td class="ex-name">جاب و کراس آروم</td><td class="ex-detail">3×2 دقیقه</td></tr>
+          <tr><td class="ex-icon">🥊</td><td class="ex-name">ترکیب جاب، کراس، هوک</td><td class="ex-detail">3×2 دقیقه</td></tr>
+          <tr><td class="ex-icon">🦵</td><td class="ex-name">ضربات پا (تکنیک درست)</td><td class="ex-detail">3×2 دقیقه</td></tr>
+          <tr><td class="ex-icon">👣</td><td class="ex-name">فوت‌ورک دور کیسه</td><td class="ex-detail">2×1 دقیقه</td></tr>
+        </table>
+      </div>
+      <div class="session-block recovery">
+        <div class="session-title">۴. آرامش — ۵ دقیقه</div>
+        <table class="ex-table">
+          <tr><td class="ex-icon">😴</td><td class="ex-name">دراز کشیدن، تنفس عمیق</td><td class="ex-detail">3 دقیقه</td></tr>
+          <tr><td class="ex-icon">🧘</td><td class="ex-name">کشش نهایی کل بدن</td><td class="ex-detail">2 دقیقه</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== GOALS ===== -->
+<div id="tab-goals" class="tab-content">
+  <div class="sec-title">اهداف و پیشرفت</div>
+  <div class="goals-grid">
+    <div class="goal-card"><div class="goal-icon">⚖️</div><div class="goal-title">کاهش وزن</div><div class="goal-desc">از ۶۷ به ۶۰ کیلو<br>۷ کیلو در ۳-۴ ماه</div></div>
+    <div class="goal-card"><div class="goal-icon">🦵</div><div class="goal-title">کشش ۱۸۰°</div><div class="goal-desc">پیژن پوز و اسپلیت روزانه</div></div>
+    <div class="goal-card"><div class="goal-icon">🏃</div><div class="goal-title">پیس هدف</div><div class="goal-desc">۸ کیلومتر<br>پیس ۵:۳۰</div></div>
+    <div class="goal-card"><div class="goal-icon">🥊</div><div class="goal-title">تکنیک</div><div class="goal-desc">بهترین در وزن و سبک خودم</div></div>
+  </div>
+  <div class="sec-title">پیشرفت دویدن</div>
+  <div class="progress-item"><div class="progress-label"><span>پیس فعلی</span><span>5:30/km ✓</span></div><div class="progress-bar"><div class="progress-fill" style="width:55%"></div></div></div>
+  <div class="progress-item"><div class="progress-label"><span>هدف پیس</span><span>5:00/km</span></div><div class="progress-bar"><div class="progress-fill" style="width:35%"></div></div></div>
+  <div class="progress-item"><div class="progress-label"><span>مسافت فعلی</span><span>4 کیلومتر</span></div><div class="progress-bar"><div class="progress-fill" style="width:50%"></div></div></div>
+  <div class="progress-item"><div class="progress-label"><span>هدف مسافت</span><span>8 کیلومتر</span></div><div class="progress-bar"><div class="progress-fill" style="width:25%"></div></div></div>
+  <div class="divider"></div>
+  <div class="sec-title">برنامه زمانی</div>
+  <div style="position:relative;padding-right:18px;">
+    <div style="position:absolute;right:0;top:0;bottom:0;width:2px;background:linear-gradient(180deg,var(--red),transparent);"></div>
+    <div style="margin-bottom:18px;position:relative;">
+      <div style="position:absolute;right:-22px;top:5px;width:8px;height:8px;background:var(--red);border-radius:50%;"></div>
+      <div style="font-size:10px;color:var(--red);letter-spacing:1px;margin-bottom:3px;">ماه ۱-۲</div>
+      <div style="font-size:14px;font-weight:700;">پایه‌گذاری</div>
+      <div style="font-size:11px;color:var(--gray);margin-top:3px;">تکنیک، استقامت پایه، کشش اولیه</div>
+    </div>
+    <div style="margin-bottom:18px;position:relative;">
+      <div style="position:absolute;right:-22px;top:5px;width:8px;height:8px;background:var(--gold);border-radius:50%;"></div>
+      <div style="font-size:10px;color:var(--gold);letter-spacing:1px;margin-bottom:3px;">ماه ۲-۳</div>
+      <div style="font-size:14px;font-weight:700;">توسعه</div>
+      <div style="font-size:11px;color:var(--gray);margin-top:3px;">افزایش مسافت، بهبود پیس، کاهش ۳-۴ کیلو</div>
+    </div>
+    <div style="margin-bottom:18px;position:relative;">
+      <div style="position:absolute;right:-22px;top:5px;width:8px;height:8px;background:var(--green);border-radius:50%;"></div>
+      <div style="font-size:10px;color:var(--green);letter-spacing:1px;margin-bottom:3px;">ماه ۳-۴</div>
+      <div style="font-size:14px;font-weight:700;">اوج</div>
+      <div style="font-size:11px;color:var(--gray);margin-top:3px;">رسیدن به ۶۰ کیلو، کشش ۱۸۰°، پیس ۵:۰۰</div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ===== JOURNAL + REPORT (MERGED) ===== -->
+<div id="tab-journal" class="tab-content">
+
+  <!-- ── بخش ۱: گزارش امروز ── -->
+  <div class="rpt-header">
+    <div>
+      <div class="rpt-brand">بوشیدو · ۹۰ روز</div>
+      <div class="rpt-title">گزارش<br><span>امروز</span></div>
+    </div>
+    <div>
+      <div class="rpt-day-num" id="rpt-day-num">—</div>
+      <div class="rpt-day-lbl">روز چالش</div>
+    </div>
+  </div>
+
+  <div class="rpt-meta">
+    <div class="rpt-meta-field"><label>تاریخ</label><input type="text" id="rpt-date" readonly style="cursor:default;opacity:0.8;"></div>
+    <div class="rpt-meta-field"><label>روز هفته</label><input type="text" id="rpt-weekday" readonly style="cursor:default;opacity:0.8;"></div>
+    <div class="rpt-meta-field"><label>وزن (کیلو)</label><input type="text" id="rpt-weight" placeholder="—"></div>
+  </div>
+
+  <!-- تعهدات ۶گانه -->
+  <div class="rpt-section-title">تعهدات ۶گانه بوشیدو</div>
+  <div class="rpt-checklist" id="rpt-commitments">
+    <div class="rpt-check-row"><div class="rpt-check-lbl">🌅 قبل از ۹ صبح بیدار شدم</div><button class="rpt-tick" id="bt0" onclick="bushidoTick(0)"></button></div>
+    <div class="rpt-check-row"><div class="rpt-check-lbl">🥊 حداقل ۶۰ دقیقه ورزش</div><button class="rpt-tick" id="bt1" onclick="bushidoTick(1)"></button></div>
+    <div class="rpt-check-row"><div class="rpt-check-lbl">📖 حداقل ۱۰ صفحه کتاب</div><button class="rpt-tick" id="bt2" onclick="bushidoTick(2)"></button></div>
+    <div class="rpt-check-row"><div class="rpt-check-lbl">✍️ ژورنال نوشتم</div><button class="rpt-tick" id="bt3" onclick="bushidoTick(3)"></button></div>
+    <div class="rpt-check-row"><div class="rpt-check-lbl">⚔️ یک کار سخت انجام دادم</div><button class="rpt-tick" id="bt4" onclick="bushidoTick(4)"></button></div>
+    <div class="rpt-check-row"><div class="rpt-check-lbl">🎯 روی هدف اصلی پیشرفت داشتم</div><button class="rpt-tick" id="bt5" onclick="bushidoTick(5)"></button></div>
+  </div>
+
+  <!-- تمرین امروز -->
+  <div class="rpt-section-title">تمرین امروز</div>
+  <div class="rpt-workout-list" id="rpt-workout-list">
+    <div style="font-size:11px;color:var(--gray);padding:10px 0;">در حال خواندن تیک‌ها...</div>
+  </div>
+
+  <!-- امتیاز -->
+  <div class="rpt-score-row">
+    <div class="rpt-score-label">امتیاز روز</div>
+    <div class="rpt-score-bar-wrap"><div class="rpt-score-bar"><div class="rpt-score-fill" id="rpt-score-fill" style="width:0%"></div></div></div>
+    <div class="rpt-score-val"><span id="rpt-score-num">0</span><small>/۱۰۰</small></div>
+  </div>
+
+  <!-- حال و هوا -->
+  <div class="rpt-section-title">حال و هوا</div>
+  <div class="rpt-mood-row" style="margin-bottom:20px;">
+    <button class="rpt-mood-btn"><span class="rpt-mood-emoji">😤</span><span class="rpt-mood-lbl">جنگنده</span></button>
+    <button class="rpt-mood-btn"><span class="rpt-mood-emoji">💪</span><span class="rpt-mood-lbl">قوی</span></button>
+    <button class="rpt-mood-btn"><span class="rpt-mood-emoji">😐</span><span class="rpt-mood-lbl">معمولی</span></button>
+    <button class="rpt-mood-btn"><span class="rpt-mood-emoji">😓</span><span class="rpt-mood-lbl">خسته</span></button>
+    <button class="rpt-mood-btn"><span class="rpt-mood-emoji">🔥</span><span class="rpt-mood-lbl">آتیشم</span></button>
+  </div>
+
+  <!-- یادداشت -->
+  <div class="rpt-section-title">یادداشت روز</div>
+  <div class="rpt-fields">
+    <div class="rpt-field"><label>کار سخت امروز چی بود؟</label><textarea rows="2" placeholder="..."></textarea></div>
+    <div class="rpt-field"><label>چی یاد گرفتم؟</label><textarea rows="2" placeholder="..."></textarea></div>
+    <div class="rpt-field"><label>فردا چی باید بشه؟</label><textarea rows="2" placeholder="..."></textarea></div>
+  </div>
+
+  <!-- دکمه‌های گزارش -->
+  <div class="rpt-footer" style="margin-bottom:32px;">
+    <div class="rpt-sig">امضا<div class="rpt-sig-line"></div></div>
+    <div class="rpt-btns">
+      <button class="rpt-reset-btn" onclick="rptReset()">پاک کردن</button>
+      <button class="rpt-print-btn" onclick="window.print()">⬇ خروجی PDF</button>
+    </div>
+  </div>
+
+  <!-- ── جداکننده ── -->
+  <div style="height:1px;background:var(--border);margin:0 0 24px;"></div>
+
+  <!-- ── بخش ۲: آمار هفتگی ژورنال ── -->
+  <div class="sec-title" style="margin-top:0;">📊 آمار تمرین هفتگی</div>
+  <div class="week-nav">
+    <button class="week-nav-btn" onclick="changeWeek(-1)">‹</button>
+    <div style="text-align:center;">
+      <div id="week-label" style="font-size:14px;font-weight:700;"></div>
+      <div id="week-range" style="font-size:10px;color:var(--gray);margin-top:2px;"></div>
+    </div>
+    <button class="week-nav-btn" onclick="changeWeek(1)">›</button>
+  </div>
+  <div class="j-stats">
+    <div class="jstat" style="border-color:rgba(61,220,132,0.25)"><div class="jstat-num" id="js-full" style="color:var(--green)">0</div><div class="jstat-lbl">کامل ✅</div></div>
+    <div class="jstat" style="border-color:rgba(255,180,0,0.25)"><div class="jstat-num" id="js-part" style="color:var(--yellow)">0</div><div class="jstat-lbl">ناقص ⚡</div></div>
+    <div class="jstat" style="border-color:rgba(232,19,42,0.25)"><div class="jstat-num" id="js-miss" style="color:var(--red)">0</div><div class="jstat-lbl">نرفتم ❌</div></div>
+    <div class="jstat" style="border-color:rgba(201,168,76,0.25)"><div class="jstat-num" id="js-pct" style="color:var(--gold)">0%</div><div class="jstat-lbl">پیشرفت</div></div>
+  </div>
+  <div style="background:var(--card);border-radius:10px;padding:12px 14px;margin-bottom:12px;border:1px solid var(--border);">
+    <div style="display:flex;justify-content:space-between;font-size:11px;margin-bottom:6px;">
+      <span style="color:var(--gray);">پیشرفت هفته</span>
+      <span id="js-pct2" style="color:var(--gold);font-weight:700;"></span>
+    </div>
+    <div style="height:10px;background:#111;border-radius:5px;overflow:hidden;position:relative;">
+      <div id="pb-m" style="position:absolute;top:0;right:0;height:100%;background:#3d0a10;border-radius:5px;width:0%;transition:width .4s;"></div>
+      <div id="pb-p" style="position:absolute;top:0;right:0;height:100%;background:linear-gradient(90deg,#906000,var(--yellow));border-radius:5px;width:0%;transition:width .4s;"></div>
+      <div id="pb-f" style="position:absolute;top:0;right:0;height:100%;background:linear-gradient(90deg,#1a6030,var(--green));border-radius:5px;width:0%;transition:width .4s;"></div>
+    </div>
+    <div style="display:flex;gap:12px;margin-top:6px;">
+      <span style="font-size:9px;color:var(--gray);display:flex;align-items:center;gap:3px;"><i style="display:inline-block;width:7px;height:7px;border-radius:2px;background:var(--green);"></i>کامل</span>
+      <span style="font-size:9px;color:var(--gray);display:flex;align-items:center;gap:3px;"><i style="display:inline-block;width:7px;height:7px;border-radius:2px;background:var(--yellow);"></i>ناقص</span>
+      <span style="font-size:9px;color:var(--gray);display:flex;align-items:center;gap:3px;"><i style="display:inline-block;width:7px;height:7px;border-radius:2px;background:#3d0a10;"></i>نرفتم</span>
+    </div>
+  </div>
+  <div class="chart-wrap">
+    <div class="chart-title">نمودار هفته</div>
+    <div class="chart-bars" id="wk-chart"></div>
+    <div class="chart-labels" id="wk-labels"></div>
+  </div>
+  <div id="j-days"></div>
+  <div class="chart-wrap">
+    <div class="chart-title">نمودار ۴ هفته اخیر</div>
+    <div style="display:flex;align-items:flex-end;gap:8px;height:80px;justify-content:center;" id="mo-chart"></div>
+    <div style="display:flex;gap:8px;margin-top:6px;justify-content:center;" id="mo-labels"></div>
+  </div>
+  <div class="chart-wrap">
+    <div class="chart-title">درصد موفقیت هر نوع تمرین</div>
+    <div id="type-stats"></div>
+  </div>
+  <div class="chart-wrap" style="margin-bottom:0;">
+    <div class="chart-title">آمار کلی</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+      <div style="background:#111;border-radius:8px;padding:12px;text-align:center;"><div style="font-size:10px;color:var(--gray);margin-bottom:4px;">تمرین کامل</div><div id="ov-full" style="font-size:22px;font-weight:900;color:var(--green);">0</div></div>
+      <div style="background:#111;border-radius:8px;padding:12px;text-align:center;"><div style="font-size:10px;color:var(--gray);margin-bottom:4px;">کل کم‌کاری</div><div id="ov-miss" style="font-size:22px;font-weight:900;color:var(--red);">0</div></div>
+      <div style="background:#111;border-radius:8px;padding:12px;text-align:center;"><div style="font-size:10px;color:var(--gray);margin-bottom:4px;">بهترین هفته</div><div id="ov-best" style="font-size:22px;font-weight:900;color:var(--gold);">-</div></div>
+      <div style="background:#111;border-radius:8px;padding:12px;text-align:center;"><div style="font-size:10px;color:var(--gray);margin-bottom:4px;">درصد کلی</div><div id="ov-pct" style="font-size:22px;font-weight:900;color:var(--white);">0%</div></div>
+    </div>
+  </div>
+
+</div>
+
+</div><!-- /content -->
+
+<div class="footer">THE GOAT © ۱۴۰۴ | کیک‌بوکس حرفه‌ای</div>
+
+<script>
+// ===== TABS =====
+function showTab(name,btn){
+  document.querySelectorAll('.tab-content').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('tab-'+name).classList.add('active');
+  btn.classList.add('active');
+  setTimeout(initExChecks,50);
+}
+function toggleDay(card){
+  card.classList.toggle('open');
+  setTimeout(initExChecks,50);
+}
+
+// ===== EX CHECKS =====
+let exD={};
+try{exD=JSON.parse(localStorage.getItem('goat_ex')||'{}');}catch(e){}
+function saveEx(){localStorage.setItem('goat_ex',JSON.stringify(exD));}
+
+function initExChecks(){
+  document.querySelectorAll('.ex-check-btn').forEach(btn=>{
+    if(btn._init) return;
+    btn._init=true;
+    const tr=btn.closest('tr');
+    const table=btn.closest('table');
+    const dayId=table?table.getAttribute('data-day'):'?';
+    const rows=[...table.querySelectorAll('tr')];
+    const ri=rows.indexOf(tr);
+    const key='ex_'+dayId+'_'+ri;
+    const s=exD[key]||0;
+    applyEx(btn,tr,s);
+    btn.onclick=(e)=>{
+      e.stopPropagation();
+      const cur=exD[key]||0;
+      const next=cur===0?1:cur===1?2:0;
+      exD[key]=next; saveEx();
+      applyEx(btn,tr,next);
+    };
+  });
+}
+
+function applyEx(btn,tr,s){
+  btn.setAttribute('data-s',s);
+  btn.textContent=s===1?'✅':s===2?'❌':'';
+  if(tr){tr.setAttribute('data-s',s);}
+}
+
+document.addEventListener('DOMContentLoaded',initExChecks);
+
+// ===== JOURNAL =====
+const J_DAYS=['شنبه','یکشنبه','دوشنبه','سه‌شنبه','چهارشنبه','پنجشنبه','جمعه'];
+const J_TYPES=['هوازی','باشگاه','سرعتی','باشگاه','قدرتی','باشگاه','ریکاوری'];
+const J_SUBS=['استقامت + پتک','باشگاه + صبحگاهی','اسپرینت + انفجار','باشگاه + صبحگاهی','قدرت انفجاری','باشگاه + صبحگاهی','کشش و آرامش'];
+const J_ICONS=['🏃','🥋','⚡','🥋','💪','🥋','🌿'];
+const TYPE_COL={'هوازی':'#E8132A','باشگاه':'#C9A84C','سرعتی':'#64c8ff','قدرتی':'#b47cff','ریکاوری':'#3ddc84'};
+
+let wOff=0;
+let jD={};
+try{jD=JSON.parse(localStorage.getItem('goat_j')||'{}');}catch(e){}
+function saveJ(){localStorage.setItem('goat_j',JSON.stringify(jD));}
+
+function wStart(off){
+  const n=new Date();n.setHours(0,0,0,0);
+  const dow=n.getDay();
+  const toSat=dow===6?0:dow+1;
+  const s=new Date(n);s.setDate(n.getDate()-toSat+off*7);return s;
+}
+function wDates(off){
+  const s=wStart(off);
+  return Array.from({length:7},(_,i)=>{const d=new Date(s);d.setDate(s.getDate()+i);return d;});
+}
+function dk(d){return d.toISOString().split('T')[0];}
+function sc(s){return s===1?1:s===2?0.5:0;}
+
+function setJ(dateStr,val){jD[dateStr]=val;saveJ();renderJournal();}
+function changeWeek(dir){wOff+=dir;renderJournal();}
+
+function renderJournal(){
+  const dates=wDates(wOff);
+  const today=new Date();today.setHours(0,0,0,0);
+
+  document.getElementById('week-label').textContent=
+    wOff===0?'🗓 هفته جاری':wOff===-1?'هفته گذشته':wOff<0?`${Math.abs(wOff)} هفته پیش`:`${wOff} هفته آینده`;
+  document.getElementById('week-range').textContent=
+    dates[0].toLocaleDateString('fa-IR')+' تا '+dates[6].toLocaleDateString('fa-IR');
+
+  let full=0,part=0,miss=0,past=0;
+  dates.forEach(d=>{
+    if(d>today)return; past++;
+    const s=jD[dk(d)]||0;
+    if(s===1)full++;else if(s===2)part++;else if(s===3)miss++;
+  });
+  const scored=full+part*0.5;
+  const pct=past>0?Math.round(scored/past*100):0;
+  const mpct=past>0?Math.round(miss/past*100):0;
+
+  document.getElementById('js-full').textContent=full;
+  document.getElementById('js-part').textContent=part;
+  document.getElementById('js-miss').textContent=miss;
+  document.getElementById('js-pct').textContent=pct+'%';
+  document.getElementById('js-pct2').textContent=`پیشرفت ${pct}% | کم‌کاری ${mpct}%`;
+
+  const fw=past>0?Math.round(full/past*100):0;
+  const pw=past>0?Math.round((full+part)/past*100):0;
+  const mw=past>0?Math.round((full+part+miss)/past*100):0;
+  document.getElementById('pb-f').style.width=fw+'%';
+  document.getElementById('pb-p').style.width=pw+'%';
+  document.getElementById('pb-m').style.width=mw+'%';
+
+  // week chart
+  const wc=document.getElementById('wk-chart');
+  const wl=document.getElementById('wk-labels');
+  wc.innerHTML='';wl.innerHTML='';
+  dates.forEach((d,i)=>{
+    const isPast=d<=today,isToday=d.toDateString()===today.toDateString();
+    const s=jD[dk(d)]||0;
+    const col=s===1?'#3ddc84':s===2?'#ffb400':s===3?'#E8132A':isPast?'#222':'#181818';
+    const h=s===1?64:s===2?42:s===3?18:isPast?6:3;
+    const wrap=document.createElement('div');
+    wrap.style.cssText='flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;';
+    const pl=document.createElement('div');
+    pl.style.cssText=`font-size:9px;color:${col};font-weight:700;height:11px;`;
+    pl.textContent=s===1?'100%':s===2?'50%':s===3?'0%':'';
+    const bar=document.createElement('div');
+    bar.style.cssText=`width:100%;background:${col};border-radius:3px 3px 0 0;height:${h}px;transition:height .3s;${isToday?'outline:2px solid var(--gold);outline-offset:1px;':''}`;
+    wrap.appendChild(pl);wrap.appendChild(bar);wc.appendChild(wrap);
+    const lb=document.createElement('div');
+    lb.style.cssText=`flex:1;text-align:center;font-size:9px;color:${isToday?'var(--gold)':'var(--gray)'};font-weight:${isToday?700:400};`;
+    lb.textContent=J_DAYS[i].slice(0,2);wl.appendChild(lb);
+  });
+
+  // day cards
+  const cont=document.getElementById('j-days');
+  cont.innerHTML='';
+  dates.forEach((d,i)=>{
+    const isPast=d<=today,isToday=d.toDateString()===today.toDateString(),isFuture=d>today;
+    const dateStr=dk(d);const s=jD[dateStr]||0;
+    const tc=TYPE_COL[J_TYPES[i]]||'#888';
+    const bc=s===1?'rgba(61,220,132,0.35)':s===2?'rgba(255,180,0,0.3)':s===3?'rgba(232,19,42,0.35)':isToday?'rgba(201,168,76,0.4)':'var(--border)';
+
+    const card=document.createElement('div');
+    card.className='jday-card';
+    card.style.borderColor=bc;
+
+    const top=document.createElement('div');
+    top.className='jday-top';
+    const ico=document.createElement('div');
+    ico.className='jday-icon';
+    ico.style.background=s===1?'rgba(61,220,132,0.08)':s===2?'rgba(255,180,0,0.08)':s===3?'rgba(232,19,42,0.08)':'var(--card2)';
+    ico.textContent=J_ICONS[i];
+    const inf=document.createElement('div');
+    inf.style.cssText='flex:1;min-width:0;';
+    inf.innerHTML=`
+      <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;">
+        <span style="font-size:14px;font-weight:700;color:${isToday?'var(--gold)':'var(--white)'};">${J_DAYS[i]}</span>
+        ${isToday?'<span style="font-size:8px;background:var(--gold);color:#000;padding:2px 6px;border-radius:8px;font-weight:700;">امروز</span>':''}
+        ${isFuture?'<span style="font-size:9px;color:#333;">هنوز نرسیده</span>':''}
+      </div>
+      <div style="display:flex;align-items:center;gap:5px;margin-top:2px;">
+        <span style="width:5px;height:5px;border-radius:50%;background:${tc};display:inline-block;flex-shrink:0;"></span>
+        <span style="font-size:10px;color:${tc};font-weight:600;">${J_TYPES[i]}</span>
+        <span style="font-size:9px;color:#444;">· ${J_SUBS[i]}</span>
+      </div>
+    `;
+    top.appendChild(ico);top.appendChild(inf);card.appendChild(top);
+
+    if(isPast){
+      const btns=document.createElement('div');
+      btns.className='jday-btns';
+      [{v:1,l:'کامل',e:'✅',c:'var(--green)',bg:'rgba(61,220,132,0.08)'},
+       {v:2,l:'ناقص',e:'⚡',c:'var(--yellow)',bg:'rgba(255,180,0,0.08)'},
+       {v:3,l:'نرفتم',e:'❌',c:'var(--red)',bg:'rgba(232,19,42,0.08)'}
+      ].forEach((st,si)=>{
+        const active=s===st.v;
+        const b=document.createElement('button');
+        b.className='jday-btn';
+        b.style.background=active?st.bg:'transparent';
+        b.style.color=active?st.c:'#3a3a3a';
+        b.style.fontWeight=active?700:400;
+        b.style.borderTopColor=active?st.c:'transparent';
+        b.innerHTML=`<span style="font-size:17px;">${st.e}</span><span>${st.l}</span>`;
+        b.onclick=()=>setJ(dateStr,active?0:st.v);
+        btns.appendChild(b);
+      });
+      card.appendChild(btns);
+
+      if(s>0){
+        const pv=s===1?100:s===2?50:0;
+        const pc=s===1?'var(--green)':s===2?'var(--yellow)':'var(--red)';
+        const pl=s===1?'کامل ۱۰۰%':s===2?'ناقص ۵۰%':'کم‌کاری ۰%';
+        const mini=document.createElement('div');
+        mini.className='jday-mini';
+        mini.innerHTML=`
+          <div style="display:flex;justify-content:space-between;font-size:10px;margin-bottom:4px;">
+            <span style="color:#444;">درصد این روز</span>
+            <span style="color:${pc};font-weight:700;">${pl}</span>
+          </div>
+          <div style="height:4px;background:#111;border-radius:2px;overflow:hidden;">
+            <div style="height:100%;width:${pv}%;background:${pc};border-radius:2px;transition:width .3s;"></div>
+          </div>`;
+        card.appendChild(mini);
+      }
+    }
+    cont.appendChild(card);
+  });
+
+  // 4-week chart
+  const mc=document.getElementById('mo-chart');
+  const ml=document.getElementById('mo-labels');
+  mc.innerHTML='';ml.innerHTML='';
+  for(let w=-3;w<=0;w++){
+    const wd=wDates(w);
+    let s2=0,pt=0,ms=0;
+    wd.forEach(d=>{
+      if(d>today)return;pt++;
+      const s=jD[dk(d)]||0;
+      s2+=sc(s);if(s===3)ms++;
+    });
+    const p=pt>0?Math.round(s2/pt*100):0;
+    const mp=pt>0?Math.round(ms/pt*100):0;
+    const h=Math.max(5,Math.round(p*0.76));
+    const col=p>=80?'#3ddc84':p>=50?'#ffb400':p>0?'#E8132A':'#1a1a1a';
+    const wrap=document.createElement('div');
+    wrap.style.cssText='flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;';
+    const info=document.createElement('div');
+    info.style.cssText='text-align:center;';
+    info.innerHTML=pt>0?`<div style="font-size:11px;color:${col};font-weight:700;">${p}%</div><div style="font-size:9px;color:#E8132A;">کم‌کاری ${mp}%</div>`:'<div style="font-size:11px;color:#333;">-</div>';
+    const bar=document.createElement('div');
+    bar.style.cssText=`width:100%;max-width:52px;background:${col};border-radius:4px 4px 0 0;height:${h}px;transition:height .3s;`;
+    wrap.appendChild(info);wrap.appendChild(bar);mc.appendChild(wrap);
+    const lb=document.createElement('div');
+    lb.style.cssText='flex:1;text-align:center;font-size:10px;color:var(--gray);max-width:52px;';
+    lb.textContent=w===0?'این هفته':w===-1?'گذشته':`${Math.abs(w)}هفته پیش`;
+    ml.appendChild(lb);
+  }
+
+  // type stats
+  const ts={};
+  J_TYPES.forEach(t=>{ts[t]={f:0,p:0,m:0,tot:0};});
+  for(const ds in jD){
+    const s=jD[ds];if(!s)continue;
+    const d=new Date(ds);if(d>today)continue;
+    const dow=d.getDay();
+    const di=dow===6?0:dow+1;
+    const t=J_TYPES[di];
+    if(!ts[t])continue;
+    ts[t].tot++;
+    if(s===1)ts[t].f++;else if(s===2)ts[t].p++;else if(s===3)ts[t].m++;
+  }
+  const tc2=document.getElementById('type-stats');
+  tc2.innerHTML='';
+  [...new Set(J_TYPES)].forEach(type=>{
+    const t=ts[type];if(!t)return;
+    const scored2=t.f+t.p*0.5;
+    const p=t.tot>0?Math.round(scored2/t.tot*100):0;
+    const mp=t.tot>0?Math.round(t.m/t.tot*100):0;
+    const col=TYPE_COL[type]||'#888';
+    const row=document.createElement('div');
+    row.className='type-row';
+    row.innerHTML=`
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:5px;">
+        <div style="display:flex;align-items:center;gap:6px;">
+          <div style="width:7px;height:7px;border-radius:50%;background:${col};"></div>
+          <span style="font-size:13px;font-weight:700;">${type}</span>
+        </div>
+        <div>
+          <span style="font-size:13px;font-weight:700;color:${col};">${t.tot>0?p+'%':'ثبت نشده'}</span>
+          ${t.tot>0?`<span style="font-size:10px;color:var(--red);margin-right:6px;">کم‌کاری ${mp}%</span>`:''}
+        </div>
+      </div>
+      ${t.tot>0?`
+      <div style="height:7px;background:#111;border-radius:3px;overflow:hidden;margin-bottom:5px;position:relative;">
+        <div style="position:absolute;top:0;right:0;height:100%;width:${Math.round(t.m/t.tot*100)}%;background:rgba(232,19,42,0.25);border-radius:3px;"></div>
+        <div style="position:absolute;top:0;right:0;height:100%;width:${p}%;background:${col};border-radius:3px;opacity:0.85;transition:width .3s;"></div>
+      </div>
+      <div style="display:flex;gap:10px;font-size:10px;color:#555;">
+        <span style="color:var(--green);">✅ ${t.f}</span>
+        <span style="color:var(--yellow);">⚡ ${t.p}</span>
+        <span style="color:var(--red);">❌ ${t.m}</span>
+      </div>`:'<div style="font-size:10px;color:#333;">هنوز ثبت نشده</div>'}
+    `;
+    tc2.appendChild(row);
+  });
+
+  // overall
+  let ovF=0,ovM=0,ovT=0,ovS=0;
+  for(const ds in jD){
+    const s=jD[ds];if(!s)continue;
+    const d=new Date(ds);if(d>today)continue;
+    ovT++;ovS+=sc(s);
+    if(s===1)ovF++;else if(s===3)ovM++;
+  }
+  const ovP=ovT>0?Math.round(ovS/ovT*100):0;
+  document.getElementById('ov-full').textContent=ovF;
+  document.getElementById('ov-miss').textContent=ovM;
+  document.getElementById('ov-pct').textContent=ovP+'%';
+  let best=0;
+  for(let w=-20;w<=0;w++){
+    const wd=wDates(w);let s3=0,pt=0;
+    wd.forEach(d=>{if(d>today)return;pt++;s3+=sc(jD[dk(d)]||0);});
+    const p=pt>0?Math.round(s3/pt*100):0;
+    if(p>best)best=p;
+  }
+  document.getElementById('ov-best').textContent=best>0?best+'%':'-';
+}
+</script>
+
+<script>
+// ===== BUSHIDO REPORT =====
+var _bD=(function(){try{return JSON.parse(localStorage.getItem('goat_bushido')||'{}');}catch(e){return {};}})();
+
+function _bSave(){localStorage.setItem('goat_bushido',JSON.stringify(_bD));}
+
+function _bRender(){
+  for(var i=0;i<6;i++){
+    var btn=document.getElementById('bt'+i);
+    if(!btn) continue;
+    var s=_bD['b'+i]||0;
+    btn.textContent=s===1?'✓':s===2?'✗':'';
+    btn.style.background=s===1?'var(--green)':s===2?'var(--red)':'';
+    btn.style.borderColor=s===1?'var(--green)':s===2?'var(--red)':'var(--border)';
+    btn.style.color=s?'#fff':'transparent';
+  }
+  var done=0;
+  for(var j=0;j<6;j++){if(_bD['b'+j]===1)done++;}
+  var sc=Math.round(done/6*100);
+  var sn=document.getElementById('rpt-score-num');
+  var sf=document.getElementById('rpt-score-fill');
+  if(sn)sn.textContent=sc;
+  if(sf)sf.style.width=sc+'%';
+}
+
+function bushidoTick(i){
+  var cur=_bD['b'+i]||0;
+  _bD['b'+i]=cur===0?1:cur===1?2:0;
+  _bSave();
+  _bRender();
+}
+
+function rptReset(){
+  if(!confirm('همه چیز پاک بشه؟'))return;
+  for(var i=0;i<6;i++)_bD['b'+i]=0;
+  _bSave();_bRender();
+  document.querySelectorAll('.rpt-mood-btn').forEach(function(b){b.classList.remove('rpt-active');});
+  document.querySelectorAll('#tab-journal textarea').forEach(function(t){t.value='';});
+  var w=document.getElementById('rpt-weight');if(w)w.value='';
+}
+
+// auto-fill date & day
+(function(){
+  var WDAYS=['یکشنبه','دوشنبه','سه‌شنبه','چهارشنبه','پنجشنبه','جمعه','شنبه'];
+  var now=new Date();
+  var wd=document.getElementById('rpt-weekday');
+  var dt=document.getElementById('rpt-date');
+  if(wd)wd.value=WDAYS[now.getDay()];
+  if(dt){try{dt.value=new Intl.DateTimeFormat('fa-IR',{year:'numeric',month:'2-digit',day:'2-digit'}).format(now);}catch(e){dt.value=now.toLocaleDateString('fa-IR');}}
+  var SK='bushido_start';
+  if(!localStorage.getItem(SK))localStorage.setItem(SK,now.toDateString());
+  var diff=Math.floor((now-new Date(localStorage.getItem(SK)))/86400000)+1;
+  var dn=document.getElementById('rpt-day-num');
+  if(dn)dn.textContent=Math.min(Math.max(diff,1),90);
+})();
+
+// mood buttons
+document.querySelectorAll('.rpt-mood-btn').forEach(function(btn){
+  btn.onclick=function(){
+    document.querySelectorAll('.rpt-mood-btn').forEach(function(b){b.classList.remove('rpt-active');});
+    btn.classList.add('rpt-active');
+  };
+});
+
+// render on tab open
+var _origShowTab=window.showTab;
+window.showTab=function(name,btn){
+  _origShowTab(name,btn);
+  if(name==='journal'){
+    setTimeout(_bRender,0);
+    renderJournal();
+  }
+};
+
+// initial render - delayed so DOM is ready
+setTimeout(_bRender,0);
+
+if("serviceWorker" in navigator){
+  navigator.serviceWorker.register("sw.js").then(()=>console.log("SW ready"));
+}
+</script>
+</body>
+</html>
